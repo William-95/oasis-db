@@ -108,3 +108,4 @@ public function deleteUser($id)
   return response()->json("User delete.");
 }
 }
+
