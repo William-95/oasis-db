@@ -107,5 +107,26 @@ public function deleteUser($id)
 
   return response()->json("User delete.");
 }
+
+// ------------------- // ------------------- // ------------------- // ------------------- //  
+// findUser
+public function findUser(Request $request){
+  $cleaned_name = filter_var(
+    $request->input("name"),
+    FILTER_SANITIZE_STRING
+  );
+  $cleaned_password = filter_var(
+    $request->input("password"),
+    FILTER_SANITIZE_STRING
+  );
+ 
+  $user= DB::table('user')
+ ->select('*')
+ ->where('name',$cleaned_name)
+ ->where ('password',$cleaned_password)
+ ->get();
+
+ return response()->json($user);
+}
 }
 
