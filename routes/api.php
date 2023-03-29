@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\DogController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -18,6 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+// user
 Route::get('/users',[UserController::class,'readUser']);
 Route::post('/users',[UserController::class,'createUser']);
 Route::put('/users/{id}',[UserController::class,'updateUser']);
@@ -25,3 +28,9 @@ Route::delete('/users/{id}',[UserController::class,'deleteUser']);
 
 // find user
 Route::post('/user',[UserController::class,'findUser']);
+
+
+// dog
+Route::get('/dogs',[DogController::class,'readDog']);
+Route::post('/dogs',[DogController::class,'createDog']);
+
