@@ -10,6 +10,6 @@ class Dog extends Model
     public $timestamps = false;
     use HasFactory;
 
-    protected $table='user';
+    protected $table='dog';
     protected $fillable=['id_dog','name','sex','race','size','date_birth','microchip','date_entry','img','structure','contacts'];
 }

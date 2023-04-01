@@ -12,14 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('dog', function (Blueprint $table) {
-            $table->increments('id_dog')->unique();
-            $table->string('name')->nullable();
+            $table->increments('id')->unique();
+            $table->string('name');
             $table->string('sex');
             $table->string('race');
             $table->string('size');
-            $table->date('date_birth')->format('d/m/Y')->nullable();
+            $table->date('date_birth');
             $table->integer('microchip')->required(15)->unique();
-            $table->date('date_entry')->format('d/m/Y');
+            $table->date('date_entry');
             $table->string('img');
             $table->string('structure');
             $table->string('contacts');
