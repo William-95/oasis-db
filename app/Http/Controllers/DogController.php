@@ -177,4 +177,20 @@ public function deleteDog($id)
 
   return response()->json("Cane cancellato.");
 }
+
+// ------------------- // ------------------- // ------------------- // ------------------- //  
+// findDog
+public function findDog(Request $request){
+    $cleaned_microchip = filter_var(
+      $request->input("microchip"),
+      FILTER_SANITIZE_STRING
+    );
+      
+    $dog= DB::table('dog')
+   ->select('*')
+   ->where('microchip',$cleaned_microchip)
+   ->get();
+  
+   return response()->json($dog);
+  }
 }
