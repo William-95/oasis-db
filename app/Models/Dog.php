@@ -12,4 +12,8 @@ class Dog extends Model
 
     protected $table='dog';
     protected $fillable=['id_dog','name','sex','race','size','date_birth','microchip','date_entry','img','structure','contacts'];
+    public function setImageAttribute($value)
+    {
+        $this->attributes['img'] = $value;
+    }
 }

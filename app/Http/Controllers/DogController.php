@@ -72,12 +72,12 @@ class DogController extends Controller
       //   $request->file("img")->store('storage'),
       //   FILTER_SANITIZE_URL
       // );
-     
-      // $request->validate([
-      //   'image'=>'required|image|mimes:jpeg,png,jpg,gif',
-      // ]);
-      $imgName=time().'.'.$request->img->extension();
-      $request->img->move(public_path('images'),$imgName);
+      if ($request->hasFile('img')) {
+        $path= $request->file('img')->move('public/images', $request->file('img')->getClientOriginalName());
+        $dogs->img=$path;
+
+      }
+
     $dogs->name = $cleaned_name;
     $dogs->sex = $cleaned_sex;
     $dogs->race = $cleaned_race;
@@ -86,12 +86,12 @@ class DogController extends Controller
     $dogs->microchip = $cleaned_microchip;
     $dogs->date_entry = $cleaned_date_entry;
     
-  //  $dogs->img = $request->file("img")->store('images');
-// $dogs->img=$image;
+  //  $dogs->img = $request->file('img')->move('public/images', $request->file('img')->getClientOriginalName());
 
     $dogs->structure = $cleaned_structure;
     $dogs->contacts = $cleaned_contacts;
 
+    
 
     
     $dogs->save();
