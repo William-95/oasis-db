@@ -159,4 +159,15 @@ class DogController extends Controller
 
     return response()->json($dog);
   }
+
+  // oneDog
+  // readDog
+  public function oneDog(Request $request, $id)
+  {
+    $dogs = Dog::find($id);
+      
+      
+    return response()->json($dogs);
+
+  }
 }

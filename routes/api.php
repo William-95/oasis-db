@@ -38,3 +38,6 @@ Route::delete('/dogs/{id}',[DogController::class,'deleteDog']);
 
 //find dog
 Route::post('/dog',[DogController::class,'findDog']);
+ 
+//oneDog
+Route::get('/dog/{id}',[DogController::class,'oneDog']);
