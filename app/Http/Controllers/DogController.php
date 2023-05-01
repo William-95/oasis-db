@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 use App\Models\Dog;
 
@@ -60,7 +61,7 @@ class DogController extends Controller
     if ($request->hasFile('img')) {
       $path= $request->file('img')->move('public/images', $request->file('img')->getClientOriginalName());
       $dogs->img=$path;
-      // public_path(
+      
     }
 
     $dogs->name = $cleaned_name;
@@ -106,7 +107,7 @@ class DogController extends Controller
       FILTER_SANITIZE_STRING
     );
 
-    $cleaned_img = filter_var($request->input("img"), FILTER_SANITIZE_URL);
+    // $cleaned_img = filter_var($request->input("img"), FILTER_SANITIZE_URL);
 
     $cleaned_structure = filter_var(
       $request->input("structure"),
@@ -118,6 +119,15 @@ class DogController extends Controller
       FILTER_SANITIZE_STRING
     );
 
+    if ($request->hasFile('img')) {
+      $destination=$dogs->img;
+      if(File::exists($destination)){
+        File::delete($destination);
+      };
+      $path= $request->file('img')->move('public/images', $request->file('img')->getClientOriginalName());
+      $dogs->img=$path;
+    }
+
     $dogs->name = $cleaned_name;
     $dogs->sex = $cleaned_sex;
     $dogs->race = $cleaned_race;
@@ -125,7 +135,6 @@ class DogController extends Controller
     $dogs->date_birth = $cleaned_date_birth;
     $dogs->microchip = $cleaned_microchip;
     $dogs->date_entry = $cleaned_date_entry;
-    $dogs->img = $cleaned_img;
     $dogs->structure = $cleaned_structure;
     $dogs->contacts = $cleaned_contacts;
 
