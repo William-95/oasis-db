@@ -64,14 +64,14 @@ class DogController extends Controller
       
     }
 
-    $dogs->name = $cleaned_name;
-    $dogs->sex = $cleaned_sex;
-    $dogs->race = $cleaned_race;
-    $dogs->size = $cleaned_size;
+    $dogs->name =ucfirst( $cleaned_name);
+    $dogs->sex = ucfirst($cleaned_sex);
+    $dogs->race = ucfirst($cleaned_race);
+    $dogs->size = ucfirst($cleaned_size);
     $dogs->date_birth = $cleaned_date_birth;
     $dogs->microchip = $cleaned_microchip;
     $dogs->date_entry = $cleaned_date_entry;
-    $dogs->structure = $cleaned_structure;
+    $dogs->structure = ucfirst($cleaned_structure);
     $dogs->contacts = $cleaned_contacts;
 
     $dogs->save();
@@ -107,7 +107,6 @@ class DogController extends Controller
       FILTER_SANITIZE_STRING
     );
 
-    // $cleaned_img = filter_var($request->input("img"), FILTER_SANITIZE_URL);
 
     $cleaned_structure = filter_var(
       $request->input("structure"),
@@ -127,16 +126,33 @@ class DogController extends Controller
       $path= $request->file('img')->move('public/images', $request->file('img')->getClientOriginalName());
       $dogs->img=$path;
     }
-
-    $dogs->name = $cleaned_name;
-    $dogs->sex = $cleaned_sex;
-    $dogs->race = $cleaned_race;
-    $dogs->size = $cleaned_size;
+if(!empty($cleaned_name)){
+    $dogs->name = ucfirst($cleaned_name);
+}
+if(!empty($cleaned_sex)){
+    $dogs->sex = ucfirst($cleaned_sex);
+}
+if(!empty($cleaned_race)){
+    $dogs->race =ucfirst( $cleaned_race);
+}
+if(!empty($cleaned_size)){
+    $dogs->size = ucfirst($cleaned_size);
+}
+if(!empty($cleaned_date_birth)){
     $dogs->date_birth = $cleaned_date_birth;
+}
+if(!empty($cleaned_microchip)){
     $dogs->microchip = $cleaned_microchip;
+}
+if(!empty($cleaned_date_entry)){
     $dogs->date_entry = $cleaned_date_entry;
-    $dogs->structure = $cleaned_structure;
+}
+if(!empty($cleaned_structure)){
+    $dogs->structure =ucfirst( $cleaned_structure);
+}
+if(!empty($cleaned_contacts)){
     $dogs->contacts = $cleaned_contacts;
+}
 
     $dogs->save();
 
@@ -170,7 +186,6 @@ class DogController extends Controller
   }
 
   // oneDog
-  // readDog
   public function oneDog(Request $request, $id)
   {
     $dogs = Dog::find($id);
