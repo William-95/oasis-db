@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Hash;
 
 class UserController extends Controller
 {
@@ -42,8 +43,8 @@ class UserController extends Controller
 
     $user->name = $cleaned_name;
     $user->email = $cleaned_email;
-    $user->password = $cleaned_password;
-    $user->confirm_password = $cleaned_confirm_password;
+    $user->password =Hash::make($cleaned_password); 
+    $user->confirm_password =Hash::make($cleaned_confirm_password);
 
     if ($cleaned_password == $cleaned_confirm_password) {
       $user->save();
@@ -85,7 +86,7 @@ class UserController extends Controller
       $user->password = $cleaned_password;
     }
     if (!empty($cleaned_confirm_password)) {
-      $user->confirm_password = $cleaned_confirm_password;
+      $user->confirm_password =$cleaned_confirm_password;
     }
 
     if ($cleaned_password == $cleaned_confirm_password) {
@@ -111,18 +112,31 @@ class UserController extends Controller
   // findUser
   public function findUser(Request $request)
   {
-    $cleaned_name = filter_var($request->input("name"), FILTER_SANITIZE_STRING);
+    $cleaned_email = filter_var($request->input("email"), FILTER_SANITIZE_EMAIL);
     $cleaned_password = filter_var(
       $request->input("password"),
       FILTER_SANITIZE_STRING
     );
+    $user=User::where('email','=',$cleaned_email)->first();
 
-    $user = DB::table("user")
-      ->select("*")
-      ->where("name", $cleaned_name)
-      ->where("password", $cleaned_password)
-      ->get();
+      if($user){
+        if(Hash::check($cleaned_password,$user->password)){
+          return response()->json($user);
+        }else{
+          return response()->json('Password errata');
+        }
+      }else{
+        return response()->json('Email non registrata');
+      }
 
-    return response()->json($user);
+    // $user = DB::table("user")
+    //   ->select("*")
+    //   ->where("name", $cleaned_name)
+    //   ->where("password",$cleaned_password)
+    //   ->get();
+
+    // return response()->json($user);
+
+
   }
 }
