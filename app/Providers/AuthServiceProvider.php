@@ -19,14 +19,9 @@ class AuthServiceProvider extends ServiceProvider
     /**
      * Register any authentication / authorization services.
      */
-    public function boot(UrlGenerator $url)
+    
+    public function boot(): void
     {
-        if (env('APP_ENV') == 'production') {
-            $url->forceScheme('https');
-        }
+        //
     }
-    // public function boot(): void
-    // {
-    //     //
-    // }
 }
