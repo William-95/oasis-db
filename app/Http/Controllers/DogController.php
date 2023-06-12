@@ -48,6 +48,11 @@ class DogController extends Controller
       FILTER_SANITIZE_STRING
     );
 
+    $cleaned_region = filter_var(
+      $request->input("region"),
+      FILTER_SANITIZE_STRING
+    );
+
     $cleaned_structure = filter_var(
       $request->input("structure"),
       FILTER_SANITIZE_STRING
@@ -71,6 +76,7 @@ class DogController extends Controller
     $dogs->date_birth = $cleaned_date_birth;
     $dogs->microchip = $cleaned_microchip;
     $dogs->date_entry = $cleaned_date_entry;
+    $dogs->region = ucfirst($cleaned_region);
     $dogs->structure = ucfirst($cleaned_structure);
     $dogs->contacts = $cleaned_contacts;
 
@@ -107,6 +113,10 @@ class DogController extends Controller
       FILTER_SANITIZE_STRING
     );
 
+    $cleaned_region = filter_var(
+      $request->input("region"),
+      FILTER_SANITIZE_STRING
+    );
 
     $cleaned_structure = filter_var(
       $request->input("structure"),
@@ -146,6 +156,9 @@ if(!empty($cleaned_microchip)){
 }
 if(!empty($cleaned_date_entry)){
     $dogs->date_entry = $cleaned_date_entry;
+}
+if(!empty($cleaned_region)){
+  $dogs->region =ucfirst( $cleaned_region);
 }
 if(!empty($cleaned_structure)){
     $dogs->structure =ucfirst( $cleaned_structure);

@@ -21,6 +21,7 @@ return new class extends Migration
             $table->integer('microchip')->unique();
             $table->date('date_entry');
             $table->string('img');
+            $table->string('region');
             $table->string('structure');
             $table->string('contacts');
         });

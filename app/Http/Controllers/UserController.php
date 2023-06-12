@@ -51,7 +51,7 @@ class UserController extends Controller
 
       return response()->json($user);
     } else {
-      return response()->json("Utente non creato.Password non confermata");
+      return response()->json("Password non confermata");
     }
   }
 
