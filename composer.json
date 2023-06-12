@@ -45,6 +45,15 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
+        ],
+        "production-deploy":[
+            "@php artisan cache:clear",
+            "@php artican auth:clear-reset",
+            "@php artican route:clear",
+            "@php artican route:cache",
+            "@php artican config:clear",
+            "@php artican optimize:clear",
+            "@php artican config:cache"
         ]
     },
     "extra": {
