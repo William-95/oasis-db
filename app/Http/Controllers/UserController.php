@@ -83,10 +83,10 @@ class UserController extends Controller
       $user->email = $cleaned_email;
     }
     if (!empty($cleaned_password)) {
-      $user->password = $cleaned_password;
+      $user->password = Hash::make($cleaned_password);
     }
     if (!empty($cleaned_confirm_password)) {
-      $user->confirm_password =$cleaned_confirm_password;
+      $user->confirm_password =Hash::make($cleaned_confirm_password);
     }
 
     if ($cleaned_password == $cleaned_confirm_password) {
