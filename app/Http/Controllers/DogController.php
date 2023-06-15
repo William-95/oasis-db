@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 use App\Models\Dog;
+use App\Http\Requests\MultipartFormRequest;
+use App\Http\Resources\MultipartFormResource;
 
 class DogController extends Controller
 {
@@ -21,7 +23,7 @@ class DogController extends Controller
   }
 
   // createDog
-  public function createDog(Request $request)
+  public function createDog(MultipartFormRequest  $request): MultipartFormResource
   {
     $dogs = new Dog();
 
@@ -83,7 +85,7 @@ class DogController extends Controller
 
     $dogs->save();
 
-    return response()->json($dogs);
+    return response()->json(new MultipartFormResource($dogs));
   }
 
   // updateDog
