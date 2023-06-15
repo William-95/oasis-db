@@ -23,7 +23,7 @@ class DogController extends Controller
   }
 
   // createDog
-  public function createDog(MultipartFormRequest  $request):MultipartFormResource
+  public function createDog(Request  $request)
   {
     $dogs = new Dog();
 
@@ -84,8 +84,7 @@ class DogController extends Controller
     $dogs->contacts = $cleaned_contacts;
 
     $dogs->save();
-    return new MultipartFormResource($dogs);
-    // return response()->json($dogs);
+    return response()->json($dogs);
   }
 
   // updateDog
