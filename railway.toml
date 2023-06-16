@@ -1,2 +1,2 @@
 [build]
-chmod = "-R 755 public/images"
+chmod = -R 775 public/images
