@@ -65,23 +65,23 @@ class DogController extends Controller
       FILTER_SANITIZE_STRING
     );
 
-    // if ($request->hasFile('img')) {
-    //   $path= $request->file('img')->move('public/images', $request->file('img')->getClientOriginalName(). '.'.time() .'.'.  $request->file('img')->getClientOriginalExtension());
-    //   $dogs->img=$path;
-    //   }else{
-    //     return   'no file' ;  
-    //   }
     if ($request->hasFile('img')) {
-      $image = $request->file('img');
-      $storagePath = public_path('images');
-      $imageName = $image ->getClientOriginalName(). '.'.time() .'.'. $image->getClientOriginalExtension();
-      $image->move($storagePath, $imageName);
-      $imageUrl = 'public/images/' . $imageName;
-      $dogs->img=$imageUrl;
-      return 'image ok';
-    }else{
-      return 'no file';
-    }
+      $path= $request->file('img')->move('public/images', $request->file('img')->getClientOriginalName(). '.'.time() .'.'.  $request->file('img')->getClientOriginalExtension());
+      $dogs->img=$path;
+      }else{
+        return   'no file' ;  
+      }
+    // if ($request->hasFile('img')) {
+    //   $image = $request->file('img');
+    //   $storagePath = public_path('images');
+    //   $imageName = $image ->getClientOriginalName(). '.'.time() .'.'. $image->getClientOriginalExtension();
+    //   $image->move($storagePath, $imageName);
+    //   $imageUrl = 'public/images/' . $imageName;
+    //   $dogs->img=$imageUrl;
+    //   return 'image ok';
+    // }else{
+    //   return 'no file';
+    // }
 
     $dogs->name =ucfirst( $cleaned_name);
     $dogs->sex = ucfirst($cleaned_sex);
