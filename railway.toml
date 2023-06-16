@@ -1,0 +1,2 @@
+[build]
+chmod = "755 public/images"
