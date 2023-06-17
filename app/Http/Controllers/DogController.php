@@ -66,7 +66,7 @@ class DogController extends Controller
     );
 
     if ($request->hasFile('img')) {
-      $path= $request->file('img')->move(public_path().'/public/images',time().'-'.$request->file('img')->getClientOriginalName() );
+      $path= $request->file('img')->move(public_path('images'),time().'-'.$request->file('img')->getClientOriginalName() );
       $dogs->img=$path;
       }else{
         return   'no file' ;  
