@@ -79,17 +79,8 @@ class DogController extends Controller
       }else{
         return   'no file' ;  
       }
-    // if ($request->hasFile('img')) {
-    //   $image = $request->file('img');
-    //   $storagePath = public_path('images');
-    //   $imageName = $image ->getClientOriginalName(). '.'.time() .'.'. $image->getClientOriginalExtension();
-    //   $image->move($storagePath, $imageName);
-    //   $imageUrl = 'public/images/' . $imageName;
-    //   $dogs->img=$imageUrl;
-    //   return 'image ok';
-    // }else{
-    //   return 'no file';
-    // }
+    
+  
 
     $dogs->name =ucfirst( $cleaned_name);
     $dogs->sex = ucfirst($cleaned_sex);
