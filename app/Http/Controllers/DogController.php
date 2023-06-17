@@ -6,8 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 use App\Models\Dog;
-use App\Http\Requests\MultipartFormRequest;
-use App\Http\Resources\MultipartFormResource;
+use Illuminate\Http\UploadedFile;
 
 class DogController extends Controller
 {
@@ -66,7 +65,7 @@ class DogController extends Controller
     );
 
     if ($request->hasFile('img')) {
-      $path= $request->file('img')->storage_path('public/images/',time().'-'.$request->file('img')->getClientOriginalName() );
+      $path= $request->file('img')->storeAs('public/images/',time().'-'.$request->file('img')->getClientOriginalName() );
       $dogs->img=$path;
       }else{
         return   'no file' ;  
