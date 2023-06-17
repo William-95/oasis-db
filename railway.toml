@@ -1,2 +1,3 @@
 [build]
+builder = "nixpacks"
 chmod = "-R 775 public/images"
