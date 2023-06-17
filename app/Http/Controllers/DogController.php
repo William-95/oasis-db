@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 use App\Models\Dog;
-use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
 
 class DogController extends Controller
 {
@@ -64,8 +64,17 @@ class DogController extends Controller
       FILTER_SANITIZE_STRING
     );
 
+    // if ($request->hasFile('img')) {
+    //   $path= $request->file('img')->move('public/images/',time().'-'.$request->file('img')->getClientOriginalName() );
+    //   $dogs->img=$path;
+    //   }else{
+    //     return   'no file' ;  
+    //   }
+
     if ($request->hasFile('img')) {
-      $path= $request->file('img')->storeAs('public/images/',time().'-'.$request->file('img')->getClientOriginalName() );
+      $fileName=time().'-'.$request->file('img')->getClientOriginalName();
+      Storage::disk('local')->put($fileName, 'public/images/');
+      $path = Storage::url($fileName);
       $dogs->img=$path;
       }else{
         return   'no file' ;  
