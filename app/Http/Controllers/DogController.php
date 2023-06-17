@@ -73,9 +73,9 @@ class DogController extends Controller
 
     if ($request->hasFile('img')) {
       $fileName=time().'-'.$request->file('img')->getClientOriginalName();
-      Storage::disk('local')->put($fileName, '/storage');
+      $url=Storage::disk('local')->put($fileName, '/storage');
       $path = Storage::url($fileName);
-      $dogs->img=$path;
+      $dogs->img=$url;
       }else{
         return   'no file' ;  
       }
