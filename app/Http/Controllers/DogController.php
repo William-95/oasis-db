@@ -81,17 +81,26 @@ class DogController extends Controller
     //     return   'no file' ;  
     //   }
     if ($request->hasFile('img')) {
-      $imagePath = $request->file('img')->getRealPath();
+      $image = $request->file('img');
+      $imageData = file_get_contents($image->getRealPath());
+
       $imgBBUploadUrl = 'https://api.imgbb.com/1/upload';
       $imgBBApiKey=env('API_KEY');
 
-      $response = \Http::attach('img', file_get_contents($imagePath))
-      ->post($imgBBUploadUrl, [
-          'key' => $imgBBApiKey
-      ]);
+       $response = Http::post($imgBBUploadUrl, [
+                'key' => $imgBBApiKey,
+                'image' => base64_encode($imageData),
+            ]);
+            
+            if ($response->successful()) {
       $imageUrl = $response->json('data.url');
 
       $dogs->img=$imageUrl;
+      return response()->json(['success' => true, 'message' => 'img salvato con successo.']);
+            }else{
+              return response()->json(['success' => false, 'message' => 'Nessuna immagine inviata.']);
+            }
+
     }else{
            return   'no file' ;  
        };
