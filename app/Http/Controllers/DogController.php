@@ -79,12 +79,7 @@ class DogController extends Controller
     //   }else{
     //     return   'no file' ;
     //   }
-    if (!$request->hasFile('img')) {
-      return response()->json(['error' => 'aiutoooo']);
-  }else{
-    return response()->json(['ok' => 'arriva']);
-
-  }
+   
     $image = $request->file("img");
     if (!$image) {
       return response()->json(["error" => "Nessuna immagine inviata."]);
@@ -94,11 +89,13 @@ class DogController extends Controller
     // $imgBBUploadUrl = 'https://api.imgbb.com/1/upload';
     // $imgBBApiKey='8b69da917972446497a438f423fa4027';
     try {
-    $response = Http::attach(
+    $response = Http::attachData(
       "img",
       file_get_contents($image),
       $image->getClientOriginalName()
-    )->post(
+    )>withHeaders([
+      'Content-Type' => 'multipart/form-data',
+  ])->post(
       "https://api.imgbb.com/1/upload?key=8b69da917972446497a438f423fa4027"
     );
 
