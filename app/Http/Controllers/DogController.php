@@ -85,13 +85,13 @@ class DogController extends Controller
       $imageData = file_get_contents($image->getRealPath());
 
       $imgBBUploadUrl = 'https://api.imgbb.com/1/upload';
-      $imgBBApiKey=env('API_KEY');
+      $imgBBApiKey='8b69da917972446497a438f423fa4027';
 
        $response = Http::post($imgBBUploadUrl, [
                 'key' => $imgBBApiKey,
                 'image' => base64_encode($imageData),
             ]);
-            
+
             if ($response->successful()) {
       $imageUrl = $response->json('data.url');
 
