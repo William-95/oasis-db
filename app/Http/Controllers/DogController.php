@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -88,10 +89,12 @@ class DogController extends Controller
 
     // $imgBBUploadUrl = 'https://api.imgbb.com/1/upload';
     // $imgBBApiKey='8b69da917972446497a438f423fa4027';
+    $imageFile = new UploadedFile($image->getRealPath(), $image->getClientOriginalName());
+
     try {
-    $response = Http::attachData(
+    $response = Http::attach(
       "img",
-      file_get_contents($image),
+      file_get_contents($imageFile),
       $image->getClientOriginalName()
     )>withHeaders([
       'Content-Type' => 'multipart/form-data',
