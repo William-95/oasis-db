@@ -96,7 +96,7 @@ class DogController extends Controller
       "img",
       file_get_contents($imageFile),
       $image->getClientOriginalName()
-    )>withHeaders([
+    )->withHeaders([
       'Content-Type' => 'multipart/form-data',
   ])->post(
       "https://api.imgbb.com/1/upload?key=8b69da917972446497a438f423fa4027"
