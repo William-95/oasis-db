@@ -88,7 +88,8 @@ class DogController extends Controller
       ->post($imgBBUploadUrl, [
           'key' => $imgBBApiKey
       ]);
-      $imageUrl = $response['data']['url'];
+      $imageUrl = $response->json('data.url');
+
       $dogs->img=$imageUrl;
     }
 
