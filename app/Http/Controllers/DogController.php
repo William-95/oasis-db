@@ -17,13 +17,12 @@ class DogController extends Controller
     $dogs = DB::table("dog")
       ->select("*")
       ->get();
-      
-    return response()->json($dogs);
 
+    return response()->json($dogs);
   }
 
   // createDog
-  public function createDog(Request  $request)
+  public function createDog(Request $request)
   {
     $dogs = new Dog();
 
@@ -69,7 +68,7 @@ class DogController extends Controller
     //   $path= $request->file('img')->move('public/images/',time().'-'.$request->file('img')->getClientOriginalName() );
     //   $dogs->img=$path;
     //   }else{
-    //     return   'no file' ;  
+    //     return   'no file' ;
     //   }
 
     // if ($request->hasFile('img')) {
@@ -78,36 +77,38 @@ class DogController extends Controller
     //   $path = Storage::url($fileName);
     //   $dogs->img=$path;
     //   }else{
-    //     return   'no file' ;  
+    //     return   'no file' ;
     //   }
-    if ($request->hasFile('img')) {
-      $image = $request->file('img');
-      $imageData = file_get_contents($image->getRealPath());
 
-      $imgBBUploadUrl = 'https://api.imgbb.com/1/upload';
-      $imgBBApiKey='8b69da917972446497a438f423fa4027';
+    $image = $request->file("img");
+    if (!$image) {
+      return response()->json(["error" => "Nessuna immagine inviata."]);
+    }
+    // $imageData = file_get_contents($image->getRealPath());
 
-       $response = Http::post($imgBBUploadUrl, [
-                'key' => $imgBBApiKey,
-                'image' => base64_encode($imageData),
-            ]);
+    // $imgBBUploadUrl = 'https://api.imgbb.com/1/upload';
+    // $imgBBApiKey='8b69da917972446497a438f423fa4027';
 
-            if ($response->successful()) {
-      $imageUrl = $response->json('data.url');
+    $response = Http::attach(
+      "img",
+      file_get_contents($image),
+      $image->getClientOriginalName()
+    )->post(
+      "https://api.imgbb.com/1/upload?key=8b69da917972446497a438f423fa4027"
+    );
 
-      $dogs->img=$imageUrl;
-      return dd(response()->json(['success' => true, 'message' => 'img salvato con successo.']));
-            }else{
-              return dd(response()->json(['success' => false, 'message' => 'Nessuna immagine inviata.']));
-            }
+    if ($response->successful()) {
+      $imageUrl = $response->json("data.url");
 
-    }else{
-           return   'no file' ;  
-       };
+      $dogs->img = $imageUrl;
+      return response()->json(["image_url" => $imgUrl]);
+    } else {
+      return response()->json([
+        "error" => 'Errore durante il caricamento dell\'immagine su ImgBB.',
+      ]);
+    }
 
-  
-
-    $dogs->name =ucfirst( $cleaned_name);
+    $dogs->name = ucfirst($cleaned_name);
     $dogs->sex = ucfirst($cleaned_sex);
     $dogs->race = ucfirst($cleaned_race);
     $dogs->size = ucfirst($cleaned_size);
@@ -165,44 +166,46 @@ class DogController extends Controller
       FILTER_SANITIZE_STRING
     );
 
-    if ($request->hasFile('img')) {
-      $destination=$dogs->img;
-      if(File::exists($destination)){
+    if ($request->hasFile("img")) {
+      $destination = $dogs->img;
+      if (File::exists($destination)) {
         File::delete($destination);
-      };
-      $path= $request->file('img')->move('public/images', $request->file('img')->getClientOriginalName());
-      $dogs->img=$path;
+      }
+      $path = $request
+        ->file("img")
+        ->move("public/images", $request->file("img")->getClientOriginalName());
+      $dogs->img = $path;
     }
-if(!empty($cleaned_name)){
-    $dogs->name = ucfirst($cleaned_name);
-}
-if(!empty($cleaned_sex)){
-    $dogs->sex = ucfirst($cleaned_sex);
-}
-if(!empty($cleaned_race)){
-    $dogs->race =ucfirst( $cleaned_race);
-}
-if(!empty($cleaned_size)){
-    $dogs->size = ucfirst($cleaned_size);
-}
-if(!empty($cleaned_date_birth)){
-    $dogs->date_birth = $cleaned_date_birth;
-}
-if(!empty($cleaned_microchip)){
-    $dogs->microchip = $cleaned_microchip;
-}
-if(!empty($cleaned_date_entry)){
-    $dogs->date_entry = $cleaned_date_entry;
-}
-if(!empty($cleaned_region)){
-  $dogs->region =ucfirst( $cleaned_region);
-}
-if(!empty($cleaned_structure)){
-    $dogs->structure =ucfirst( $cleaned_structure);
-}
-if(!empty($cleaned_contacts)){
-    $dogs->contacts = $cleaned_contacts;
-}
+    if (!empty($cleaned_name)) {
+      $dogs->name = ucfirst($cleaned_name);
+    }
+    if (!empty($cleaned_sex)) {
+      $dogs->sex = ucfirst($cleaned_sex);
+    }
+    if (!empty($cleaned_race)) {
+      $dogs->race = ucfirst($cleaned_race);
+    }
+    if (!empty($cleaned_size)) {
+      $dogs->size = ucfirst($cleaned_size);
+    }
+    if (!empty($cleaned_date_birth)) {
+      $dogs->date_birth = $cleaned_date_birth;
+    }
+    if (!empty($cleaned_microchip)) {
+      $dogs->microchip = $cleaned_microchip;
+    }
+    if (!empty($cleaned_date_entry)) {
+      $dogs->date_entry = $cleaned_date_entry;
+    }
+    if (!empty($cleaned_region)) {
+      $dogs->region = ucfirst($cleaned_region);
+    }
+    if (!empty($cleaned_structure)) {
+      $dogs->structure = ucfirst($cleaned_structure);
+    }
+    if (!empty($cleaned_contacts)) {
+      $dogs->contacts = $cleaned_contacts;
+    }
 
     $dogs->save();
 
@@ -239,9 +242,7 @@ if(!empty($cleaned_contacts)){
   public function oneDog(Request $request, $id)
   {
     $dogs = Dog::find($id);
-      
-      
-    return response()->json($dogs);
 
+    return response()->json($dogs);
   }
 }
