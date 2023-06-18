@@ -94,7 +94,7 @@ class DogController extends Controller
     try {
     $response = Http::attach(
       "img",
-      file_get_contents($imageFile),
+      $imageFile,
       $image->getClientOriginalName()
     )->withHeaders([
       'Content-Type' => 'multipart/form-data',
