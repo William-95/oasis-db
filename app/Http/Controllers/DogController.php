@@ -88,7 +88,7 @@ class DogController extends Controller
 
     // $imgBBUploadUrl = 'https://api.imgbb.com/1/upload';
     // $imgBBApiKey='8b69da917972446497a438f423fa4027';
-
+    try {
     $response = Http::attach(
       "img",
       file_get_contents($image),
@@ -103,11 +103,14 @@ class DogController extends Controller
       $dogs->img = $imageUrl;
       return response()->json(["image_url" => $imgUrl]);
     } else {
+      $imageError = $response->json("error.message");
       return response()->json([
-        "error" => 'Errore durante il caricamento dell\'immagine su ImgBB.',
+        "error" => $imageError,
       ]);
     }
-
+  } catch (RequestException $exception) {
+    $errorMessage = $exception->getMessage();
+}
     $dogs->name = ucfirst($cleaned_name);
     $dogs->sex = ucfirst($cleaned_sex);
     $dogs->race = ucfirst($cleaned_race);
