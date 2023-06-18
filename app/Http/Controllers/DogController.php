@@ -80,7 +80,7 @@ class DogController extends Controller
     //   }else{
     //     return   'no file' ;  
     //   }
-    if ($request->hasFile('img')) {
+    
       $imagePath = $request->file('img')->getRealPath();
       $imgBBUploadUrl = 'https://api.imgbb.com/1/upload';
       $imgBBApiKey=env('API_KEY');
@@ -92,7 +92,7 @@ class DogController extends Controller
       $imageUrl = $response->json('data.url');
 
       $dogs->img=$imageUrl;
-    }
+    
 
   
 
