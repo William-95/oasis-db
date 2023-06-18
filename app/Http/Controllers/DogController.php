@@ -81,6 +81,9 @@ class DogController extends Controller
     //   }
     if (!$request->hasFile('img')) {
       return response()->json(['error' => 'aiutoooo']);
+  }else{
+    return response()->json(['ok' => 'arriva']);
+
   }
     $image = $request->file("img");
     if (!$image) {
