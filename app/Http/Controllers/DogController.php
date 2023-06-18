@@ -94,14 +94,14 @@ class DogController extends Controller
     try {
     $response = Http::attach(
       "img",
-      $imageFile,
+      file_get_contents($imageFile),
       $image->getClientOriginalName()
     )->withHeaders([
       'Content-Type' => 'multipart/form-data',
   ])->post(
       "https://api.imgbb.com/1/upload?key=8b69da917972446497a438f423fa4027"
     );
-
+    dd($response);
     if ($response->successful()) {
       $imageUrl = $response->json("data.url");
 
