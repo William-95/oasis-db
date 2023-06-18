@@ -96,9 +96,9 @@ class DogController extends Controller
       $imageUrl = $response->json('data.url');
 
       $dogs->img=$imageUrl;
-      return response()->json(['success' => true, 'message' => 'img salvato con successo.']);
+      return dd(response()->json(['success' => true, 'message' => 'img salvato con successo.']));
             }else{
-              return response()->json(['success' => false, 'message' => 'Nessuna immagine inviata.']);
+              return dd(response()->json(['success' => false, 'message' => 'Nessuna immagine inviata.']));
             }
 
     }else{
