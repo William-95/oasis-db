@@ -71,15 +71,27 @@ class DogController extends Controller
     //     return   'no file' ;  
     //   }
 
+    // if ($request->hasFile('img')) {
+    //   $fileName=time().'-'.$request->file('img')->getClientOriginalName();
+    //   Storage::disk('local')->put($fileName, '/storage');
+    //   $path = Storage::url($fileName);
+    //   $dogs->img=$path;
+    //   }else{
+    //     return   'no file' ;  
+    //   }
     if ($request->hasFile('img')) {
-      $fileName=time().'-'.$request->file('img')->getClientOriginalName();
-      Storage::disk('local')->put($fileName, '/storage');
-      $path = Storage::url($fileName);
-      $dogs->img=$path;
-      }else{
-        return   'no file' ;  
-      }
-    
+      $imagePath = $request->file('img')->getRealPath();
+      $imgBBUploadUrl = 'https://api.imgbb.com/1/upload';
+      $imgBBApiKey=env('API_KEY');
+
+      $response = \Http::attach('img', file_get_contents($imagePath))
+      ->post($imgBBUploadUrl, [
+          'key' => $imgBBApiKey
+      ]);
+      $imageUrl = $response['data']['url'];
+      $dogs->img=$imageUrl;
+    }
+
   
 
     $dogs->name =ucfirst( $cleaned_name);
