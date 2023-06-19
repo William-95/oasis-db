@@ -78,7 +78,7 @@ class DogController extends Controller
         ->withHeaders([
           "Accept" => "application/json",
         ])
-        ->post("https://api.imgbb.com/1/upload", [
+        ->post("https://api.imgbb.com/1/image", [
           "key" => $ApiKey,
         ]);
 
