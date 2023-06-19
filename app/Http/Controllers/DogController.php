@@ -69,7 +69,7 @@ class DogController extends Controller
       $image = $request->file("img");
       $fileName = time() . "-" . $image->getClientOriginalName();
       $ApiKey = env("API_KEY");
-
+      $album='oasis-db';
       $response = Http::attach(
         "image",
         file_get_contents($image->getRealPath()),
@@ -78,8 +78,9 @@ class DogController extends Controller
         ->withHeaders([
           "Accept" => "application/json",
         ])
-        ->post("https://api.imgbb.com/1/image", [
+        ->post("https://api.imgbb.com/1/album", [
           "key" => $ApiKey,
+          'name' => $album
         ]);
 
       if ($response->successful()) {
