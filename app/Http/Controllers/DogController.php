@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\UploadedFile;
+// use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -91,14 +91,12 @@ class DogController extends Controller
     // $imgBBApiKey='8b69da917972446497a438f423fa4027';
     // $imageFile = new UploadedFile($image->path(), $image->getClientOriginalName());
 $fileName=$image->getClientOriginalName();
-    try {
+    // try {
     $response = Http::attach(
       "image",
       file_get_contents($image->path()),
       $fileName
-    )->withHeaders([
-      'Content-Type' => 'multipart/form-data',
-  ])->post(
+    )->post(
       "https://api.imgbb.com/1/upload",[
         "key"=>"40a219acb36654304229e99d45b5f73a",
         "image"=>$fileName
@@ -117,9 +115,9 @@ $fileName=$image->getClientOriginalName();
         "error" => $imageError,
       ]);
     }
-  } catch (RequestException $exception) {
-    $errorMessage = $exception->getMessage();
-}
+//   } catch (RequestException $exception) {
+//     $errorMessage = $exception->getMessage();
+// }
     $dogs->name = ucfirst($cleaned_name);
     $dogs->sex = ucfirst($cleaned_sex);
     $dogs->race = ucfirst($cleaned_race);
