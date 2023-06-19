@@ -72,28 +72,17 @@ class DogController extends Controller
     //     return   'no file' ;
     //   }
 
-    // if ($request->hasFile('img')) {
-    //   $fileName=time().'-'.$request->file('img')->getClientOriginalName();
-    //   Storage::disk('local')->put($fileName, '/storage');
-    //   $path = Storage::url($fileName);
-    //   $dogs->img=$path;
-    //   }else{
-    //     return   'no file' ;
-    //   }
+    
    
     $image = $request->file("img");
     if (!$image) {
       return response()->json(["error" => "Nessuna immagine inviata."]);
     }
-    // $imageData = file_get_contents($image->getRealPath());
-    // base64_encode()
-    // $imgBBUploadUrl = 'https://api.imgbb.com/1/upload';
-    // $imgBBApiKey='8b69da917972446497a438f423fa4027';
-    // $imageFile = new UploadedFile($image->path(), $image->getClientOriginalName());
+    
     $fileName=time().'-'.$image->getClientOriginalName();
     try {
     $response = Http::attach(
-      "image",
+      "image/image",
       file_get_contents($image->getRealPath()),
       $fileName
     )->withHeaders([
@@ -108,9 +97,9 @@ class DogController extends Controller
 
     if ($response->successful()) {
       
-      $responseData = $response->json("data.url");
-      $imageUrl = $responseData;
-      return response()->json($imageUrl);
+      $imageUrl = $response->json("data.url");
+     
+      $dogs->name =$imageUrl;
     } else {
       $imageError = $response->json("error.message");
       return response()->json([
