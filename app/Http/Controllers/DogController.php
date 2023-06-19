@@ -100,7 +100,7 @@ $fileName=$image->getClientOriginalName();
       'Content-Type' => 'multipart/form-data',
   ])->post(
       "https://api.imgbb.com/1/upload",[
-        "key"=>env('API_KEY'),
+        "key"=>"40a219acb36654304229e99d45b5f73a",
         "image"=>$fileName
       ]
               
