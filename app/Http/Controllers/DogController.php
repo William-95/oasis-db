@@ -108,7 +108,7 @@ class DogController extends Controller
 
     if ($response->successful()) {
       
-      $responseData = $response->json("data");
+      $responseData = $response->json("data.url");
       $imageUrl = $responseData;
       return response()->json($imageUrl);
     } else {
