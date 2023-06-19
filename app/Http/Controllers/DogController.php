@@ -93,7 +93,7 @@ class DogController extends Controller
     $fileName=time().'-'.$image->getClientOriginalName();
     try {
     $response = Http::attach(
-      "image/image",
+      "image",
       file_get_contents($image->getRealPath()),
       $fileName
     )->withHeaders([
