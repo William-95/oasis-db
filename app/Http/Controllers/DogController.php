@@ -157,17 +157,49 @@ class DogController extends Controller
       $request->input("contacts"),
       FILTER_SANITIZE_STRING
     );
-
+// ---------------
     if ($request->hasFile("img")) {
       $destination = $dogs->img;
-      if (File::exists($destination)) {
-        File::delete($destination);
+      // if (File::exists($destination)) {
+      //   File::delete($destination);
+      // }
+      // $path = $request
+      //   ->file("img")
+      //   ->move("public/images", $request->file("img")->getClientOriginalName());
+      // $dogs->img = $path;
+      $image = $request->file("img");
+      $fileName = time() . "-" . $image->getClientOriginalName();
+      $ApiKey = env("API_KEY");
+
+      $response = Http::attach(
+        "image",
+        file_get_contents($image->getRealPath()),
+        $fileName
+      )
+        ->withHeaders([
+          "Accept" => "application/json",
+        ])
+        ->post("https://api.imgbb.com/1/upload", [
+          "key" => $ApiKey,
+          "url" => $destination
+        ]);
+
+      if ($response->successful()) {
+        $imageUrl = $response->json("data.url");
+        $dogs->img = $imageUrl;
+      } else {
+        $imageError = $response->json("error.message");
+        return response()->json([
+          "error" => $imageError,
+        ]);
       }
-      $path = $request
-        ->file("img")
-        ->move("public/images", $request->file("img")->getClientOriginalName());
-      $dogs->img = $path;
+    } else {
+      return "no file";
+    
+
     }
+
+    //------------ 
     if (!empty($cleaned_name)) {
       $dogs->name = ucfirst($cleaned_name);
     }
