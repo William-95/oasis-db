@@ -76,10 +76,11 @@ class DogController extends Controller
    
     $image = $request->file("img");
     if (!$image) {
-      return response()->json(["error" => "Nessuna immagine inviata."]);
+      return response()->json(["error" => "Nessuna immagine."]);
     }
     
     $fileName=time().'-'.$image->getClientOriginalName();
+    $ApiKey=env('API_KEY');
     try {
     $response = Http::attach(
       "image",
@@ -89,8 +90,8 @@ class DogController extends Controller
       'Accept' => 'application/json',
   ])->post(
       "https://api.imgbb.com/1/upload",[
-        "key"=>"40a219acb36654304229e99d45b5f73a",
-        // 'expiration' => 600
+        "key"=>$ApiKey,
+        // "40a219acb36654304229e99d45b5f73a"
       ]
               
     );
