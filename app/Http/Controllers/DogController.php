@@ -99,7 +99,7 @@ class DogController extends Controller
       
       $imageUrl = $response->json("data.url");
      
-      $dogs->name =$imageUrl;
+      $dogs->img =$imageUrl;
     } else {
       $imageError = $response->json("error.message");
       return response()->json([
