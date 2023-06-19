@@ -94,14 +94,13 @@ $fileName=$image->getClientOriginalName();
     try {
     $response = Http::attach(
       "image",
-      file_get_contents($image),
+      file_get_contents($image->getRealPath()),
       $fileName
     )->withHeaders([
       'Accept' => 'application/json',
   ])->post(
       "https://api.imgbb.com/1/upload",[
         "key"=>"40a219acb36654304229e99d45b5f73a",
-        "image"=>$fileName,
         'expiration' => 600
       ]
               
