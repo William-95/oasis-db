@@ -86,11 +86,11 @@ class DogController extends Controller
       return response()->json(["error" => "Nessuna immagine inviata."]);
     }
     // $imageData = file_get_contents($image->getRealPath());
-
+    // base64_encode()
     // $imgBBUploadUrl = 'https://api.imgbb.com/1/upload';
     // $imgBBApiKey='8b69da917972446497a438f423fa4027';
     // $imageFile = new UploadedFile($image->path(), $image->getClientOriginalName());
-$fileName=base64_encode($image->getClientOriginalName());
+$fileName=$image->getClientOriginalName();
     try {
     $response = Http::attach(
       "image",
@@ -99,9 +99,11 @@ $fileName=base64_encode($image->getClientOriginalName());
     )->withHeaders([
       'Content-Type' => 'multipart/form-data',
   ])->post(
-      "https://api.imgbb.com/1/upload?key=8b69da917972446497a438f423fa4027",
-        $fileName
-      
+      "https://api.imgbb.com/1/upload",[
+        "key"=>"8b69da917972446497a438f423fa4027",
+        "image"=>$fileName
+      ]
+              
     );
     return response()->json(["response-step-1" => $response]);
 
