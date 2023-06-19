@@ -157,16 +157,9 @@ class DogController extends Controller
       $request->input("contacts"),
       FILTER_SANITIZE_STRING
     );
-// ---------------
+    // ---------------
     if ($request->hasFile("img")) {
       $destination = $dogs->img;
-      // if (File::exists($destination)) {
-      //   File::delete($destination);
-      // }
-      // $path = $request
-      //   ->file("img")
-      //   ->move("public/images", $request->file("img")->getClientOriginalName());
-      // $dogs->img = $path;
       $image = $request->file("img");
       $fileName = time() . "-" . $image->getClientOriginalName();
       $ApiKey = env("API_KEY");
@@ -181,7 +174,7 @@ class DogController extends Controller
         ])
         ->post("https://api.imgbb.com/1/upload", [
           "key" => $ApiKey,
-          "url" => $destination
+          "url" => $destination,
         ]);
 
       if ($response->successful()) {
@@ -195,11 +188,9 @@ class DogController extends Controller
       }
     } else {
       return "no file";
-    
-
     }
 
-    //------------ 
+    //------------
     if (!empty($cleaned_name)) {
       $dogs->name = ucfirst($cleaned_name);
     }
@@ -240,6 +231,7 @@ class DogController extends Controller
   public function deleteDog($id)
   {
     $cleaned_id = filter_var($id, FILTER_SANITIZE_STRING);
+
     DB::delete("delete from dog where id=?", [$cleaned_id]);
 
     return response()->json("Cane cancellato.");
