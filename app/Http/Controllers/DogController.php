@@ -89,17 +89,19 @@ class DogController extends Controller
 
     // $imgBBUploadUrl = 'https://api.imgbb.com/1/upload';
     // $imgBBApiKey='8b69da917972446497a438f423fa4027';
-    $imageFile = new UploadedFile($image->getRealPath(), $image->getClientOriginalName());
-
+    // $imageFile = new UploadedFile($image->path(), $image->getClientOriginalName());
+$fileName=$image->getClientOriginalName();
     try {
     $response = Http::attach(
-      "img",
-      file_get_contents($imageFile),
-      $image->getClientOriginalName()
+      "image",
+      file_get_contents($image->path()),
+      $fileName
     )->withHeaders([
       'Content-Type' => 'multipart/form-data',
   ])->post(
-      "https://api.imgbb.com/1/upload?key=8b69da917972446497a438f423fa4027"
+      "https://api.imgbb.com/1/upload?key=8b69da917972446497a438f423fa4027",[
+        'fileName'=>$fileName
+      ]
     );
     dd($response);
     if ($response->successful()) {
