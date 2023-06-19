@@ -72,44 +72,42 @@ class DogController extends Controller
     //     return   'no file' ;
     //   }
 
-    
-   
     $image = $request->file("img");
     if (!$image) {
       return response()->json(["error" => "Nessuna immagine."]);
     }
-    
-    $fileName=time().'-'.$image->getClientOriginalName();
-    $ApiKey=env('API_KEY');
-    try {
-    $response = Http::attach(
-      "image",
-      file_get_contents($image->getRealPath()),
-      $fileName
-    )->withHeaders([
-      'Accept' => 'application/json',
-  ])->post(
-      "https://api.imgbb.com/1/upload",[
-        "key"=>$ApiKey,
-        // "40a219acb36654304229e99d45b5f73a"
-      ]
-              
-    );
 
-    if ($response->successful()) {
-      
-      $imageUrl = $response->json("data.url");
-     
-      $dogs->img =$imageUrl;
-    } else {
-      $imageError = $response->json("error.message");
-      return response()->json([
-        "error" => $imageError,
-      ]);
-    }
-  } catch (RequestException $exception) {
-    $errorMessage = $exception->getMessage();
-}
+    $fileName = time() . "-" . $image->getClientOriginalName();
+    $ApiKey = env("API_KEY");
+    // try {
+      $response = Http::attach(
+        "image",
+        file_get_contents($image->getRealPath()),
+        $fileName
+      )
+        ->withHeaders([
+          "Accept" => "application/json",
+        ])
+        ->post("https://api.imgbb.com/1/upload", [
+          "key" => $ApiKey,         
+        ]);
+
+      if ($response->successful()) {
+
+        $imageUrl = $response->json("data.url");
+        $dogs->img = $imageUrl;
+
+      } else {
+
+        $imageError = $response->json("error.message");
+        return response()->json([
+          "error" => $imageError,
+        ]);
+
+      }
+    // } catch (RequestException $exception) {
+    //   $errorMessage = $exception->getMessage();
+    // }
     $dogs->name = ucfirst($cleaned_name);
     $dogs->sex = ucfirst($cleaned_sex);
     $dogs->race = ucfirst($cleaned_race);
