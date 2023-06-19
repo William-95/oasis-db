@@ -91,7 +91,7 @@ class DogController extends Controller
     // $imgBBApiKey='8b69da917972446497a438f423fa4027';
     // $imageFile = new UploadedFile($image->path(), $image->getClientOriginalName());
 $fileName=$image->getClientOriginalName();
-    // try {
+    try {
     $response = Http::attach(
       "image",
       file_get_contents($image->path()),
@@ -115,9 +115,9 @@ $fileName=$image->getClientOriginalName();
         "error" => $imageError,
       ]);
     }
-//   } catch (RequestException $exception) {
-//     $errorMessage = $exception->getMessage();
-// }
+  } catch (RequestException $exception) {
+    $errorMessage = $exception->getMessage();
+}
     $dogs->name = ucfirst($cleaned_name);
     $dogs->sex = ucfirst($cleaned_sex);
     $dogs->race = ucfirst($cleaned_race);
