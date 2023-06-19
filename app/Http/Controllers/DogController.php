@@ -101,7 +101,7 @@ class DogController extends Controller
   ])->post(
       "https://api.imgbb.com/1/upload",[
         "key"=>"40a219acb36654304229e99d45b5f73a",
-        'expiration' => 600
+        // 'expiration' => 600
       ]
               
     );
