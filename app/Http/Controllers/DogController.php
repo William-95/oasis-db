@@ -105,7 +105,7 @@ $fileName=$image->getClientOriginalName();
     );
 
     if ($response->successful()) {
-      $imageUrl = $response->json("data.url");
+      $imageUrl = $response->json();
 
       $dogs->img = $imageUrl;
       return response()->json(["image_url" => $imgUrl]);
