@@ -105,7 +105,6 @@ $fileName=$image->getClientOriginalName();
       ]
               
     );
-    return response()->json(["response-step-1" => $response]);
 
     if ($response->successful()) {
       $imageUrl = $response->json("data.url");
