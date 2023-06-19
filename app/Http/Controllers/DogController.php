@@ -109,7 +109,7 @@ $fileName=$image->getClientOriginalName();
     if ($response->successful()) {
       
       $responseData = $response->json();
-      $imageUrl = $responseData['url'];
+      $imageUrl = $responseData.["data.url"];
       return response()->json(["image_url" => $imageUrl]);
     } else {
       $imageError = $response->json("error.message");
