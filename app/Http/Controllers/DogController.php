@@ -90,7 +90,7 @@ class DogController extends Controller
     // $imgBBUploadUrl = 'https://api.imgbb.com/1/upload';
     // $imgBBApiKey='8b69da917972446497a438f423fa4027';
     // $imageFile = new UploadedFile($image->path(), $image->getClientOriginalName());
-$fileName=$image->getClientOriginalName();
+$fileName=base64_encode($image->getClientOriginalName());
     try {
     $response = Http::attach(
       "image",
@@ -103,7 +103,8 @@ $fileName=$image->getClientOriginalName();
         'fileName'=>$fileName
       ]
     );
-    dd($response);
+    return response()->json(["response-step-1" => $response]);
+
     if ($response->successful()) {
       $imageUrl = $response->json("data.url");
 
