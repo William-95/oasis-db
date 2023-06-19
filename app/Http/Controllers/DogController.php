@@ -65,12 +65,6 @@ class DogController extends Controller
       FILTER_SANITIZE_STRING
     );
 
-    // if ($request->hasFile('img')) {
-    //   $path= $request->file('img')->move('public/images/',time().'-'.$request->file('img')->getClientOriginalName() );
-    //   $dogs->img=$path;
-    //   }else{
-    //     return   'no file' ;
-    //   }
     if ($request->hasFile("img")) {
       $image = $request->file("img");
       $fileName = time() . "-" . $image->getClientOriginalName();
