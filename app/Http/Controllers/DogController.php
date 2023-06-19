@@ -96,13 +96,13 @@ class DogController extends Controller
     }
     $dogs->name = ucfirst($cleaned_name);
     $dogs->sex = ucfirst($cleaned_sex);
-    $dogs->race = ucfirst($cleaned_race);
+    $dogs->race = ucwords($cleaned_race);
     $dogs->size = ucfirst($cleaned_size);
     $dogs->date_birth = $cleaned_date_birth;
     $dogs->microchip = $cleaned_microchip;
     $dogs->date_entry = $cleaned_date_entry;
-    $dogs->region = ucfirst($cleaned_region);
-    $dogs->structure = ucfirst($cleaned_structure);
+    $dogs->region = ucwords($cleaned_region);
+    $dogs->structure = ucwords($cleaned_structure);
     $dogs->contacts = $cleaned_contacts;
 
     $dogs->save();
@@ -192,7 +192,7 @@ class DogController extends Controller
       $dogs->sex = ucfirst($cleaned_sex);
     }
     if (!empty($cleaned_race)) {
-      $dogs->race = ucfirst($cleaned_race);
+      $dogs->race = ucwords($cleaned_race);
     }
     if (!empty($cleaned_size)) {
       $dogs->size = ucfirst($cleaned_size);
@@ -207,10 +207,10 @@ class DogController extends Controller
       $dogs->date_entry = $cleaned_date_entry;
     }
     if (!empty($cleaned_region)) {
-      $dogs->region = ucfirst($cleaned_region);
+      $dogs->region = ucwords($cleaned_region);
     }
     if (!empty($cleaned_structure)) {
-      $dogs->structure = ucfirst($cleaned_structure);
+      $dogs->structure = ucwords($cleaned_structure);
     }
     if (!empty($cleaned_contacts)) {
       $dogs->contacts = $cleaned_contacts;

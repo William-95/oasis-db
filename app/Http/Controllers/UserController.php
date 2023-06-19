@@ -41,7 +41,7 @@ class UserController extends Controller
       FILTER_SANITIZE_STRING
     );
 
-    $user->name = $cleaned_name;
+    $user->name = ucfirst($cleaned_name);
     $user->email = $cleaned_email;
     $user->password =Hash::make($cleaned_password); 
     $user->confirm_password =Hash::make($cleaned_confirm_password);
@@ -77,7 +77,7 @@ class UserController extends Controller
       FILTER_SANITIZE_STRING
     );
     if (!empty($cleaned_name)) {
-      $user->name = $cleaned_name;
+      $user->name = ucfirst($cleaned_name);
     }
     if (!empty($cleaned_email)) {
       $user->email = $cleaned_email;
