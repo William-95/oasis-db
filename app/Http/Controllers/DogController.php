@@ -93,7 +93,7 @@ class DogController extends Controller
     $fileName=time().'-'.$image->getClientOriginalName();
     try {
     $response = Http::attach(
-      "image",
+      "image/image",
       file_get_contents($image->getRealPath()),
       $fileName
     )->withHeaders([
@@ -108,9 +108,9 @@ class DogController extends Controller
 
     if ($response->successful()) {
       
-      $responseData = $response->json();
+      $responseData = $response->json("data");
       $imageUrl = $responseData;
-      return response()->json(["image_url" => $imageUrl]);
+      return response()->json($imageUrl);
     } else {
       $imageError = $response->json("error.message");
       return response()->json([
