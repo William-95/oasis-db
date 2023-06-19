@@ -108,10 +108,9 @@ $fileName=$image->getClientOriginalName();
 
     if ($response->successful()) {
       
-      // $imageUrl = $response->json();
-
-      // $dogs->img = $imageUrl;
-      return response()->json(["image_url" => $response->json()]);
+      $responseData = $response->json();
+      $imageUrl = $responseData['url'];
+      return response()->json(["image_url" => $imageUrl]);
     } else {
       $imageError = $response->json("error.message");
       return response()->json([
