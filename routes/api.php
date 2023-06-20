@@ -33,7 +33,7 @@ Route::post('/user',[UserController::class,'findUser']);
 // dog
 Route::get('/dogs',[DogController::class,'readDog']);
 Route::post('/dogs',[DogController::class,'createDog']);
-Route::post('/dogs/{id}',[DogController::class,'updateDog']);
+Route::put('/dogs/{id}',[DogController::class,'updateDog']);
 Route::delete('/dogs/{id}',[DogController::class,'deleteDog']);
 
 //find dog
