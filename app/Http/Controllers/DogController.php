@@ -152,38 +152,39 @@ class DogController extends Controller
       FILTER_SANITIZE_STRING
     );
     // ---------------
-    // if ($request->hasFile("img")) {
-    //   $destination = $dogs->img;
-    //   $image = $request->file("img");
-    //   $fileName = time() . "-" . $image->getClientOriginalName();
-    //   $ApiKey = env("API_KEY");
+    if (!empty($request->file('img'))) {
+    if ($request->hasFile("img")) {
+      $destination = $dogs->img;
+      $image = $request->file("img");
+      $fileName = time() . "-" . $image->getClientOriginalName();
+      $ApiKey = env("API_KEY");
 
-    //   $response = Http::attach(
-    //     "image",
-    //     file_get_contents($image->getRealPath()),
-    //     $fileName
-    //   )
-    //     ->withHeaders([
-    //       "Accept" => "application/json",
-    //     ])
-    //     ->post("https://api.imgbb.com/1/upload", [
-    //       "key" => $ApiKey,
-    //       "url" => $destination,
-    //     ]);
+      $response = Http::attach(
+        "image",
+        file_get_contents($image->getRealPath()),
+        $fileName
+      )
+        ->withHeaders([
+          "Accept" => "application/json",
+        ])
+        ->post("https://api.imgbb.com/1/upload", [
+          "key" => $ApiKey,
+          "url" => $destination,
+        ]);
 
-    //   if ($response->successful()) {
-    //     $imageUrl = $response->json("data.url");
-    //     $dogs->img = $imageUrl;
-    //   } else {
-    //     $imageError = $response->json("error.message");
-    //     return response()->json([
-    //       "error" => $imageError,
-    //     ]);
-    //   }
-    // } else {
-    //   return "no file";
-    // }
-
+      if ($response->successful()) {
+        $imageUrl = $response->json("data.url");
+        $dogs->img = $imageUrl;
+      } else {
+        $imageError = $response->json("error.message");
+        return response()->json([
+          "error" => $imageError,
+        ]);
+      }
+    } else {
+      return "no file";
+    }
+    }
     //------------
     if (!empty($cleaned_name)) {
       $dogs->name = ucfirst($cleaned_name);
