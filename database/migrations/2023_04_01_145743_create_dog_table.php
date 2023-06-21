@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('race');
             $table->string('size');
             $table->date('date_birth');
-            $table->integer('microchip')->unique();
+            $table->bigInteger('microchip')->unique();
             $table->date('date_entry');
             $table->string('img');
             $table->string('region');
