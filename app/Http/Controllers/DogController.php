@@ -106,12 +106,7 @@ class DogController extends Controller
     $dogs->contacts = $cleaned_contacts;
 
     $dogs->save();
-    if( response()->succesfull()){
-      return response()->json($dogs);
-    }else{
-      return response()->json("microchip esistente");
-    }
-    
+      return response()->json($dogs);    
   }
 
   // updateDog
