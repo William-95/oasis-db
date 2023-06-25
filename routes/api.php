@@ -16,28 +16,27 @@ use App\Http\Controllers\DogController;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware("auth:api")->get("/user", function (Request $request) {
+  return $request->user();
 });
 
 // user
-Route::get('/users',[UserController::class,'readUser']);
-Route::post('/users',[UserController::class,'createUser']);
-Route::put('/users/{id}',[UserController::class,'updateUser']);
-Route::delete('/users/{id}',[UserController::class,'deleteUser']);
+Route::get("/users", [UserController::class, "readUser"]);
+Route::post("/users", [UserController::class, "createUser"]);
+Route::put("/users/{id}", [UserController::class, "updateUser"]);
+Route::delete("/users/{id}", [UserController::class, "deleteUser"]);
 
 // find user
-Route::post('/user',[UserController::class,'findUser']);
-
+Route::post("/user", [UserController::class, "findUser"]);
 
 // dog
-Route::get('/dogs',[DogController::class,'readDog']);
-Route::post('/dogs',[DogController::class,'createDog']);
-Route::post('/dogs/{id}',[DogController::class,'updateDog']);
-Route::delete('/dogs/{id}',[DogController::class,'deleteDog']);
+Route::get("/dogs", [DogController::class, "readDog"]);
+Route::post("/dogs", [DogController::class, "createDog"]);
+Route::post("/dogs/{id}", [DogController::class, "updateDog"]);
+Route::delete("/dogs/{id}", [DogController::class, "deleteDog"]);
 
 //find dog
-Route::post('/dog',[DogController::class,'findDog']);
- 
+Route::post("/dog", [DogController::class, "findDog"]);
+
 //oneDog
-Route::get('/dog/{id}',[DogController::class,'oneDog']);
+Route::get("/dog/{id}", [DogController::class, "oneDog"]);

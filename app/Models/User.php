@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class User extends Model
 {
-    public $timestamps = false;
-    use HasFactory;
+  public $timestamps = false;
+  use HasFactory;
 
-    protected $table='user';
-    protected $fillable=['id','name','email','password','confirm_password'];
+  protected $table = "user";
+  protected $fillable = ["id", "name", "email", "password", "confirm_password"];
 }

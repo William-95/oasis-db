@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-// use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -65,6 +64,7 @@ class DogController extends Controller
       FILTER_SANITIZE_STRING
     );
 
+    // ------img
     if ($request->hasFile("img")) {
       $image = $request->file("img");
       $fileName = time() . "-" . $image->getClientOriginalName();
@@ -94,6 +94,7 @@ class DogController extends Controller
     } else {
       return "no file";
     }
+    // ----end img
     $dogs->name = ucfirst($cleaned_name);
     $dogs->sex = ucfirst($cleaned_sex);
     $dogs->race = ucwords($cleaned_race);
@@ -106,7 +107,7 @@ class DogController extends Controller
     $dogs->contacts = $cleaned_contacts;
 
     $dogs->save();
-      return response()->json($dogs);    
+    return response()->json($dogs);
   }
 
   // updateDog
@@ -151,41 +152,41 @@ class DogController extends Controller
       $request->input("contacts"),
       FILTER_SANITIZE_STRING
     );
-    // ---------------
-    if (!empty($request->file('img'))) {
-    if ($request->hasFile("img")) {
-      $destination = $dogs->img;
-      $image = $request->file("img");
-      $fileName = time() . "-" . $image->getClientOriginalName();
-      $ApiKey = env("API_KEY");
+    // ---------------img
+    if (!empty($request->file("img"))) {
+      if ($request->hasFile("img")) {
+        $destination = $dogs->img;
+        $image = $request->file("img");
+        $fileName = time() . "-" . $image->getClientOriginalName();
+        $ApiKey = env("API_KEY");
 
-      $response = Http::attach(
-        "image",
-        file_get_contents($image->getRealPath()),
-        $fileName
-      )
-        ->withHeaders([
-          "Accept" => "application/json",
-        ])
-        ->post("https://api.imgbb.com/1/upload", [
-          "key" => $ApiKey,
-          "url" => $destination,
-        ]);
+        $response = Http::attach(
+          "image",
+          file_get_contents($image->getRealPath()),
+          $fileName
+        )
+          ->withHeaders([
+            "Accept" => "application/json",
+          ])
+          ->post("https://api.imgbb.com/1/upload", [
+            "key" => $ApiKey,
+            "url" => $destination,
+          ]);
 
-      if ($response->successful()) {
-        $imageUrl = $response->json("data.url");
-        $dogs->img = $imageUrl;
+        if ($response->successful()) {
+          $imageUrl = $response->json("data.url");
+          $dogs->img = $imageUrl;
+        } else {
+          $imageError = $response->json("error.message");
+          return response()->json([
+            "error" => $imageError,
+          ]);
+        }
       } else {
-        $imageError = $response->json("error.message");
-        return response()->json([
-          "error" => $imageError,
-        ]);
+        return "no file";
       }
-    } else {
-      return "no file";
     }
-    }
-    //------------
+    //------------ end img
     if (!empty($cleaned_name)) {
       $dogs->name = ucfirst($cleaned_name);
     }
@@ -246,12 +247,11 @@ class DogController extends Controller
       ->where("microchip", $cleaned_microchip)
       ->get();
 
-      if ($dog->isNotEmpty()) {
-        return response()->json($dog);
-      } else {       
-        return response()->json('cane non trovato');
-      }
-    // return response()->json($dog);
+    if ($dog->isNotEmpty()) {
+      return response()->json($dog);
+    } else {
+      return response()->json("cane non trovato");
+    }
   }
 
   // oneDog
