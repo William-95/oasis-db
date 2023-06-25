@@ -243,10 +243,11 @@ class DogController extends Controller
 
     $dog = DB::table("dog")
       ->select("*")
-      ->where("microchip", $cleaned_microchip)
-      ->get();
+      ->where("microchip", $cleaned_microchip);
+      // ->get();
 
       if ($dog->exists()) {
+        $dog->get();
         return response()->json($dog);
       } else {
         
