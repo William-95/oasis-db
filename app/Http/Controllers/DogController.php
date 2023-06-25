@@ -246,7 +246,7 @@ class DogController extends Controller
       ->where("microchip", $cleaned_microchip)
       ->get();
 
-      if ($dog->successful()) {
+      if ($dog->exists()) {
         return response()->json($dog);
       } else {
         
