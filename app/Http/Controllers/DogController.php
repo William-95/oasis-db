@@ -246,7 +246,13 @@ class DogController extends Controller
       ->where("microchip", $cleaned_microchip)
       ->get();
 
-    return response()->json($dog);
+      if ($dog->successful()) {
+        return response()->json($dog);
+      } else {
+        
+        return response()->json('cane non trovato');
+      }
+    // return response()->json($dog);
   }
 
   // oneDog
