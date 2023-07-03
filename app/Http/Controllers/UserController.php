@@ -34,11 +34,10 @@ class UserController extends Controller
   }
 
   $user = User::create([
-    'name' => $validator['name'],
-    'email' => $validator['email'],
-    'password' => Hash::make($validator['password']),
-    'confirm_password' => Hash::make($validator['confirm_password']),
-
+    'name' => $validator->validated()['name'],
+    'email' => $validator->validated()['email'],
+    'password' => Hash::make($validator->validated()['password']),
+    'confirm_password' => Hash::make($validator->validated()['confirm_password']),
 ]);
 
 $data = [
