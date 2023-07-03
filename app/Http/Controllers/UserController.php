@@ -34,7 +34,7 @@ class UserController extends Controller
   }
 
   $validatedData = $validator->validated();
-
+  dd($validatedData);
   $user = User::create([
       'name' => $validatedData['name'],
       'email' => $validatedData['email'],
