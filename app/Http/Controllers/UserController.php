@@ -12,9 +12,7 @@ class UserController extends Controller
   // readUser
   public function readUser()
   {
-    // $user = DB::table("user")
-    //   ->select("*")
-    //   ->get();
+   
     $user = User::all();
     return response()->json($user);
   }
@@ -24,35 +22,49 @@ class UserController extends Controller
   {
     $user = new User();
 
-    // $cleaned_name = filter_var($request->input("name"), FILTER_SANITIZE_STRING);
+    $validator = Validator::make($request->all(), [
+      'name' => ['required', 'string', 'max:255', 'ucfirst_transform'],
+      'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+      'password' => ['required', 'string','confirmed'],
+      'confirm_password' => ['required', 'string','confirmed'],
+  ]);
 
-    // $cleaned_email = filter_var(
-    //   $request->input("email"),
-    //   FILTER_SANITIZE_STRING
-    // );
+  if ($validator->fails()) {
+      return response()->json(['errors' => $validator->errors()], 400);
+  }
 
-    // $cleaned_password = filter_var(
-    //   $request->input("password"),
-    //   FILTER_SANITIZE_STRING
-    // );
+  $user = User::create([
+    'name' => $validator['name'],
+    'email' => $validator['email'],
+    'password' => Hash::make($validator['password']),
+    'confirm_password' => Hash::make($validator['confirm_password']),
 
-    // $cleaned_confirm_password = filter_var(
-    //   $request->input("confirm_password"),
-    //   FILTER_SANITIZE_STRING
-    // );
+]);
 
-    $user->name = ucfirst($request->input("name"));
-    $user->email = $request->input("email");
-    $user->password = Hash::make($request->input("password"));
-    $user->confirm_password = Hash::make($request->input("confirm_password"));
+$data = [
+  [
+      'metadata' => [
+          'success' => true,
+          'message' => 'Utente registrato con successo!'
+      ],
+      'data' => $user
+  ]
+];
 
-    if ($request->input("password") == $request->input("confirm_password")) {
-      $user->save();
 
-      return response()->json($user);
-    } else {
-      return response()->json("Password non confermata");
-    }
+return response()->json($data);
+    // $user->name = ucfirst($request->input("name"));
+    // $user->email = $request->input("email");
+    // $user->password = Hash::make($request->input("password"));
+    // $user->confirm_password = Hash::make($request->input("confirm_password"));
+
+    // if ($request->input("password") == $request->input("confirm_password")) {
+    //   $user->save();
+
+    //   return response()->json($user);
+    // } else {
+    //   return response()->json("Password non confermata");
+    // }
   }
 
   //   updateUser
@@ -60,22 +72,7 @@ class UserController extends Controller
   {
     $user = User::find($id);
 
-    // $cleaned_name = filter_var($request->input("name"), FILTER_SANITIZE_STRING);
-
-    // $cleaned_email = filter_var(
-    //   $request->input("email"),
-    //   FILTER_SANITIZE_STRING
-    // );
-
-    // $cleaned_password = filter_var(
-    //   $request->input("password"),
-    //   FILTER_SANITIZE_STRING
-    // );
-
-    // $cleaned_confirm_password = filter_var(
-    //   $request->input("confirm_password"),
-    //   FILTER_SANITIZE_STRING
-    // );
+    
     if (!empty($request->input("name"))) {
       $user->name = ucfirst($request->input("name"));
     }
@@ -102,8 +99,7 @@ class UserController extends Controller
   //   deleteUser
   public function deleteUser($id)
   {
-    // $cleaned_id = filter_var($id, FILTER_SANITIZE_STRING);
-    // DB::delete("delete from user where id=?", [$cleaned_id]);
+    
     User::destroy($id);
     return response()->json("User delete.");
   }
@@ -112,14 +108,7 @@ class UserController extends Controller
   // findUser
   public function findUser(Request $request)
   {
-    // $cleaned_email = filter_var(
-    //   $request->input("email"),
-    //   FILTER_SANITIZE_EMAIL
-    // );
-    // $cleaned_password = filter_var(
-    //   $request->input("password"),
-    //   FILTER_SANITIZE_STRING
-    // );
+    
     $email=$request->input("email");
     $user = User::where("email", "=", $email)->first();
 
