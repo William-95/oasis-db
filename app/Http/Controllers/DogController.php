@@ -14,10 +14,10 @@ class DogController extends Controller
   // readDog
   public function readDog()
   {
-    $dogs = DB::table("dog")
-      ->select("*")
-      ->get();
-
+    // $dogs = DB::table("dog")
+    //   ->select("*")
+    //   ->get();
+ $dogs=Dog::all();
     return response()->json($dogs);
   }
 
@@ -26,43 +26,43 @@ class DogController extends Controller
   {
     $dogs = new Dog();
 
-    $cleaned_name = filter_var($request->input("name"), FILTER_SANITIZE_STRING);
+    // $cleaned_name = filter_var($request->input("name"), FILTER_SANITIZE_STRING);
 
-    $cleaned_sex = filter_var($request->input("sex"), FILTER_SANITIZE_STRING);
+    // $cleaned_sex = filter_var($request->input("sex"), FILTER_SANITIZE_STRING);
 
-    $cleaned_race = filter_var($request->input("race"), FILTER_SANITIZE_STRING);
+    // $cleaned_race = filter_var($request->input("race"), FILTER_SANITIZE_STRING);
 
-    $cleaned_size = filter_var($request->input("size"), FILTER_SANITIZE_STRING);
+    // $cleaned_size = filter_var($request->input("size"), FILTER_SANITIZE_STRING);
 
-    $cleaned_date_birth = filter_var(
-      $request->input("date_birth"),
-      FILTER_SANITIZE_STRING
-    );
+    // $cleaned_date_birth = filter_var(
+    //   $request->input("date_birth"),
+    //   FILTER_SANITIZE_STRING
+    // );
 
-    $cleaned_microchip = filter_var(
-      $request->input("microchip"),
-      FILTER_SANITIZE_NUMBER_INT
-    );
+    // $cleaned_microchip = filter_var(
+    //   $request->input("microchip"),
+    //   FILTER_SANITIZE_NUMBER_INT
+    // );
 
-    $cleaned_date_entry = filter_var(
-      $request->input("date_entry"),
-      FILTER_SANITIZE_STRING
-    );
+    // $cleaned_date_entry = filter_var(
+    //   $request->input("date_entry"),
+    //   FILTER_SANITIZE_STRING
+    // );
 
-    $cleaned_region = filter_var(
-      $request->input("region"),
-      FILTER_SANITIZE_STRING
-    );
+    // $cleaned_region = filter_var(
+    //   $request->input("region"),
+    //   FILTER_SANITIZE_STRING
+    // );
 
-    $cleaned_structure = filter_var(
-      $request->input("structure"),
-      FILTER_SANITIZE_STRING
-    );
+    // $cleaned_structure = filter_var(
+    //   $request->input("structure"),
+    //   FILTER_SANITIZE_STRING
+    // );
 
-    $cleaned_contacts = filter_var(
-      $request->input("contacts"),
-      FILTER_SANITIZE_STRING
-    );
+    // $cleaned_contacts = filter_var(
+    //   $request->input("contacts"),
+    //   FILTER_SANITIZE_STRING
+    // );
 
     // ------img
     if ($request->hasFile("img")) {
@@ -95,16 +95,16 @@ class DogController extends Controller
       return "no file";
     }
     // ----end img
-    $dogs->name = ucfirst($cleaned_name);
-    $dogs->sex = ucfirst($cleaned_sex);
-    $dogs->race = ucwords($cleaned_race);
-    $dogs->size = ucfirst($cleaned_size);
-    $dogs->date_birth = $cleaned_date_birth;
-    $dogs->microchip = $cleaned_microchip;
-    $dogs->date_entry = $cleaned_date_entry;
-    $dogs->region = ucwords($cleaned_region);
-    $dogs->structure = ucwords($cleaned_structure);
-    $dogs->contacts = $cleaned_contacts;
+    $dogs->name = ucfirst($request->input("name"));
+    $dogs->sex = ucfirst($request->input("sex"));
+    $dogs->race = ucwords($request->input("race"));
+    $dogs->size = ucfirst($request->input("size"));
+    $dogs->date_birth = $request->input("date_birth");
+    $dogs->microchip = $request->input("microchip");
+    $dogs->date_entry = $request->input("date_entry");
+    $dogs->region = ucwords($request->input("region"));
+    $dogs->structure = ucwords($request->input("structure"));
+    $dogs->contacts = $request->input("contacts");
 
     $dogs->save();
     return response()->json($dogs);
@@ -115,43 +115,43 @@ class DogController extends Controller
   {
     $dogs = Dog::find($id);
 
-    $cleaned_name = filter_var($request->input("name"), FILTER_SANITIZE_STRING);
+    // $cleaned_name = filter_var($request->input("name"), FILTER_SANITIZE_STRING);
 
-    $cleaned_sex = filter_var($request->input("sex"), FILTER_SANITIZE_STRING);
+    // $cleaned_sex = filter_var($request->input("sex"), FILTER_SANITIZE_STRING);
 
-    $cleaned_race = filter_var($request->input("race"), FILTER_SANITIZE_STRING);
+    // $cleaned_race = filter_var($request->input("race"), FILTER_SANITIZE_STRING);
 
-    $cleaned_size = filter_var($request->input("size"), FILTER_SANITIZE_STRING);
+    // $cleaned_size = filter_var($request->input("size"), FILTER_SANITIZE_STRING);
 
-    $cleaned_date_birth = filter_var(
-      $request->input("date_birth"),
-      FILTER_SANITIZE_STRING
-    );
+    // $cleaned_date_birth = filter_var(
+    //   $request->input("date_birth"),
+    //   FILTER_SANITIZE_STRING
+    // );
 
-    $cleaned_microchip = filter_var(
-      $request->input("microchip"),
-      FILTER_SANITIZE_NUMBER_INT
-    );
+    // $cleaned_microchip = filter_var(
+    //   $request->input("microchip"),
+    //   FILTER_SANITIZE_NUMBER_INT
+    // );
 
-    $cleaned_date_entry = filter_var(
-      $request->input("date_entry"),
-      FILTER_SANITIZE_STRING
-    );
+    // $cleaned_date_entry = filter_var(
+    //   $request->input("date_entry"),
+    //   FILTER_SANITIZE_STRING
+    // );
 
-    $cleaned_region = filter_var(
-      $request->input("region"),
-      FILTER_SANITIZE_STRING
-    );
+    // $cleaned_region = filter_var(
+    //   $request->input("region"),
+    //   FILTER_SANITIZE_STRING
+    // );
 
-    $cleaned_structure = filter_var(
-      $request->input("structure"),
-      FILTER_SANITIZE_STRING
-    );
+    // $cleaned_structure = filter_var(
+    //   $request->input("structure"),
+    //   FILTER_SANITIZE_STRING
+    // );
 
-    $cleaned_contacts = filter_var(
-      $request->input("contacts"),
-      FILTER_SANITIZE_STRING
-    );
+    // $cleaned_contacts = filter_var(
+    //   $request->input("contacts"),
+    //   FILTER_SANITIZE_STRING
+    // );
     // ---------------img
     if (!empty($request->file("img"))) {
       if ($request->hasFile("img")) {
@@ -187,35 +187,35 @@ class DogController extends Controller
       }
     }
     //------------ end img
-    if (!empty($cleaned_name)) {
-      $dogs->name = ucfirst($cleaned_name);
+    if (!empty($request->input("name"))) {
+      $dogs->name = ucfirst($request->input("name"));
     }
-    if (!empty($cleaned_sex)) {
-      $dogs->sex = ucfirst($cleaned_sex);
+    if (!empty($request->input("sex"))) {
+      $dogs->sex = ucfirst($request->input("sex"));
     }
-    if (!empty($cleaned_race)) {
-      $dogs->race = ucwords($cleaned_race);
+    if (!empty($request->input("race"))) {
+      $dogs->race = ucwords($request->input("race"));
     }
-    if (!empty($cleaned_size)) {
-      $dogs->size = ucfirst($cleaned_size);
+    if (!empty($request->input("size"))) {
+      $dogs->size = ucfirst($request->input("size"));
     }
-    if (!empty($cleaned_date_birth)) {
-      $dogs->date_birth = $cleaned_date_birth;
+    if (!empty($request->input("date_birth"))) {
+      $dogs->date_birth = $request->input("date_birth");
     }
-    if (!empty($cleaned_microchip)) {
-      $dogs->microchip = $cleaned_microchip;
+    if (!empty($request->input("microchip"))) {
+      $dogs->microchip = $request->input("microchip");
     }
-    if (!empty($cleaned_date_entry)) {
-      $dogs->date_entry = $cleaned_date_entry;
+    if (!empty($request->input("date_entry"))) {
+      $dogs->date_entry = $request->input("date_entry");
     }
-    if (!empty($cleaned_region)) {
-      $dogs->region = ucwords($cleaned_region);
+    if (!empty($request->input("region"))) {
+      $dogs->region = ucwords($request->input("region"));
     }
-    if (!empty($cleaned_structure)) {
-      $dogs->structure = ucwords($cleaned_structure);
+    if (!empty($request->input("structure"))) {
+      $dogs->structure = ucwords($request->input("structure"));
     }
-    if (!empty($cleaned_contacts)) {
-      $dogs->contacts = $cleaned_contacts;
+    if (!empty($request->input("contacts"))) {
+      $dogs->contacts = $request->input("contacts");
     }
 
     $dogs->save();
@@ -226,26 +226,37 @@ class DogController extends Controller
   //   deleteDog
   public function deleteDog($id)
   {
-    $cleaned_id = filter_var($id, FILTER_SANITIZE_STRING);
+    // $cleaned_id = filter_var($id, FILTER_SANITIZE_STRING);
 
-    DB::delete("delete from dog where id=?", [$cleaned_id]);
+    // DB::delete("delete from dog where id=?", [$cleaned_id]);
+    $dog = Dog::find($id);
 
-    return response()->json("Cane cancellato.");
+    if ($dog) {
+        $dog->delete();
+
+        return response()->json("Cane cancellato.");
+          } else {
+            return response()->json("Cane non cancellato.");
+              }
+    
   }
 
   // ------------------- // ------------------- // ------------------- // ------------------- //
   // findDog
   public function findDog(Request $request)
   {
-    $cleaned_microchip = filter_var(
-      $request->input("microchip"),
-      FILTER_SANITIZE_STRING
-    );
+    // $cleaned_microchip = filter_var(
+    //   $request->input("microchip"),
+    //   FILTER_SANITIZE_STRING
+    // );
 
-    $dog = DB::table("dog")
-      ->select("*")
-      ->where("microchip", $cleaned_microchip)
-      ->get();
+    // $dog = DB::table("dog")
+    //   ->select("*")
+    //   ->where("microchip", $cleaned_microchip)
+    //   ->get();
+    $microchip = $request->input('microchip');
+
+    $dog = Dog::where('microchip', $microchip)->get();
 
     if ($dog->isNotEmpty()) {
       return response()->json($dog);
