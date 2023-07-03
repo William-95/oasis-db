@@ -20,7 +20,7 @@ class UserController extends Controller
   // createUser
   public function createUser(Request $request)
   {
-    $user = new User();
+    // $user = new User();
 
     $validator = Validator::make($request->all(), [
       'name' => ['required', 'string', 'max:255', 'ucfirst_transform'],
