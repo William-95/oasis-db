@@ -101,6 +101,20 @@ return response()->json($data);
       'confirm_password' => 'nullable|string|same:password',
   ]);
   
+  if (User::where('email', $request->email)->exists()) {
+    return response()->json([
+        'success' => false,
+        'message' => 'Email esistente.'
+    ], 400);
+  }
+  
+    if ($request->password !== $request->confirm_password) {
+      return response()->json([
+        'success' => false,
+          'message' => 'Password non confermata.'
+      ], 400);
+  
+  }
   if ($validator->fails()) {
       return response()->json([
         'message'=>'validation fails',
@@ -108,11 +122,6 @@ return response()->json($data);
       ], 400);
   }
   
-  if ($request->password !== $request->confirm_password) {
-    return response()->json([
-        'message' => 'Password non confermata.'
-    ], 400);
-}
 
 
     $user = User::find($id);
