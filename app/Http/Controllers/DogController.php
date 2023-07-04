@@ -186,7 +186,7 @@ if ($request->hasFile("img")) {
    
     $dog = Dog::find($id);
 
-    if ($dog->microchip !== $request->input("microchip")) {
+    if ($dog->microchip !== $request->microchip) {
       if (Dog::where("microchip", $request->microchip)->exists()) {
         return response()->json(
           [
@@ -308,6 +308,7 @@ if ($request->hasFile("img")) {
 
   // ------------------- // ------------------- // ------------------- // ------------------- //
   // findDog
+
   public function findDog(Request $request)
   {
     $validator = Validator::make($request->all(), [
@@ -318,7 +319,6 @@ if ($request->hasFile("img")) {
 
     $microchip = $request->input("microchip");
 
-    // $dog = Dog::where("microchip", $microchip)->get();   ->isNotEmpty()
     $dog = Dog::where("microchip", "=", $microchip)->first();
 
     if ($dog) {
@@ -354,7 +354,10 @@ if ($request->hasFile("img")) {
     }
   }
 
+
+  // ------------------- // ------------------- // ------------------- // ------------------- //
   // oneDog
+
   public function oneDog(Request $request, $id)
   {
     $dogs = Dog::find($id);
