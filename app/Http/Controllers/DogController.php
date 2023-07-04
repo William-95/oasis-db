@@ -176,7 +176,7 @@ if ($request->hasFile("img")) {
       "race" => "required|string|max:100",
       "size" => "required|string|max:100",
       "date_birth" => "required|date",
-      "microchip" => "required|numeric|regex:/^\d+$/|unique:dog",
+      "microchip" => "required|numeric|regex:/^\d+$/|unique:dog,microchip".$id,
       "date_entry" => "required|date",
       "img" => "required|image",
       "region" => "required|string|max:100",
@@ -186,19 +186,17 @@ if ($request->hasFile("img")) {
    
     $dog = Dog::find($id);
 
-    if ($dog->microchip !== $request->microchip) {
-      if (Dog::where("microchip", $request->microchip)->exists()) {
-        return response()->json(
-          [
-            "success" => false,
-            "message" => "Microchip esistente.",
-          ],
-          400
-        );
-      }
-    }else{
-      
-    }
+    // if ($dog->microchip !== $request->microchip) {
+    //   if (Dog::where("microchip", $request->microchip)->exists()) {
+    //     return response()->json(
+    //       [
+    //         "success" => false,
+    //         "message" => "Microchip esistente.",
+    //       ],
+    //       400
+    //     );
+    //   }
+    // }
     if ($validator->fails()) {
       return response()->json(
         [
