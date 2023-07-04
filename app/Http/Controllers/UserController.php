@@ -134,6 +134,7 @@ return response()->json($data);
       
       
       return response()->json($data);
+
       // return response()->json($user);
     // } else {
     //   return response()->json(
@@ -153,18 +154,46 @@ return response()->json($data);
   // findUser
   public function findUser(Request $request)
   {
-    
+    $validator = Validator::make($request->all(), [
+      'email' => 'required|string|email|max:100|unique:user',
+  ]);
+  
+  if ($validator->fails()) {
+      return response()->json([
+        'message'=>'validation fails',
+        'errors' => $validator->errors()
+      ], 400);
+  }
+
     $email=$request->input("email");
     $user = User::where("email", "=", $email)->first();
-
+   
+  
+    
     if ($user) {
       if (Hash::check($request->input("password"), $user->password)) {
-        return response()->json($user);
+       
+        $data = [
+          [
+              'metadata' => [
+                  'success' => true,
+                  'message' => 'Utente confermato'
+              ],
+              'data' => $user
+          ]
+        ];
+        return response()->json($data);
       } else {
-        return response()->json("Password errata");
+        return response()->json([
+          'success' => false,
+          'message' => 'Password errata'
+        ], 400);
       }
     } else {
-      return response()->json("Email non registrata");
+      return response()->json([
+        'success' => false,
+        'message' => 'Email non registrata'
+      ], 400);
     }
   }
 }
