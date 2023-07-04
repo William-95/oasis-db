@@ -29,9 +29,7 @@ class AppServiceProvider extends ServiceProvider
         });
         Validator::extend('ucfirst_transform', function ($attribute, $value, $parameters, $validator) {
             $transformedValue = ucfirst($value);
-            $validator->setData(array_merge($validator->getData(), [$attribute => $transformedValue]));
-        
-            return true;
+            return $transformedValue === $value;
         });
     }
 
