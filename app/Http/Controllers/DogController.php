@@ -326,9 +326,10 @@ if ($request->hasFile("img")) {
 
     $microchip = $request->input("microchip");
 
-    $dog = Dog::where("microchip", $microchip)->get();
+    // $dog = Dog::where("microchip", $microchip)->get();   ->isNotEmpty()
+    $dog = Dog::where("microchip", "=", $microchip)->first();
 
-    if ($dog->isNotEmpty()) {
+    if ($dog) {
      $data = [
       [
         "metadata" => [
