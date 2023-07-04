@@ -276,18 +276,14 @@ if ($request->hasFile("img")) {
   //   deleteDog
   public function deleteDog($id)
   {
-    // $cleaned_id = filter_var($id, FILTER_SANITIZE_STRING);
+    $dog = User::find($id);
 
-    // DB::delete("delete from dog where id=?", [$cleaned_id]);
-    $dog = Dog::find($id);
+    $dog->delete();
 
-    if ($dog) {
-      $dog->delete();
-
-      return response()->json("Cane cancellato.");
-    } else {
-      return response()->json("Cane non cancellato.");
-    }
+    return response()->json([
+      "success" => true,
+      "message" => "Cane cancellato con successo",
+    ]);
   }
 
   // ------------------- // ------------------- // ------------------- // ------------------- //
