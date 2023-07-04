@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 use App\Models\Dog;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class DogController extends Controller
 {
