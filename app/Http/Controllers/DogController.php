@@ -77,7 +77,7 @@ if ($request->hasFile("img")) {
       "date_birth" => $request->date_birth,
       "microchip" => $request->microchip,
       "date_entry" => $request->date_entry,
-      "img" => $request->img,
+      "img" => $imageUrl,
       "region" => ucwords($request->region),
       "structure" => ucwords($request->structure),
       "contacts" => $request->contacts,      
