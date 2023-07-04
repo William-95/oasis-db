@@ -148,7 +148,6 @@ return response()->json($data);
     
     $user = User::find($id);
     
-    // Cancella l'utente
     $user->delete();
     
     return response()->json([
