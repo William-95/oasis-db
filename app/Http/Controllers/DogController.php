@@ -176,7 +176,10 @@ if ($request->hasFile("img")) {
       "race" => "required|string|max:100",
       "size" => "required|string|max:100",
       "date_birth" => "required|date",
-      "microchip" => "required|numeric|regex:/^\d+$/|unique:dog",
+      "microchip" => [ "required",
+      "numeric",
+      "regex:/^\d+$/",
+      Rule::unique('dog')->ignore($id, 'id'),],
       "date_entry" => "required|date",
       "img" => "required|image",
       "region" => "required|string|max:100",
@@ -194,7 +197,7 @@ if ($request->hasFile("img")) {
         400
       );
     }
-    
+
     $dog = Dog::find($id);
 
     if ($dog->microchip !== $request->input("microchip")) {
