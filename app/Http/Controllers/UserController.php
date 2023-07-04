@@ -146,8 +146,15 @@ return response()->json($data);
   public function deleteUser($id)
   {
     
-    User::destroy($id);
-    return response()->json("User delete.");
+    $user = User::find($id);
+    
+    // Cancella l'utente
+    $user->delete();
+    
+    return response()->json([
+      'success' => true,
+        'message' => 'Utente cancellato con successo',
+    ]);
   }
 
   // ------------------- // ------------------- // ------------------- // ------------------- //
