@@ -26,7 +26,7 @@ class UserController extends Controller
       'name' => 'required|string|max:100',
       'email' => 'required|string|email|max:100|unique:user',
       'password' => 'required|string|confirmed',
-      'confirm_password' => 'required|string|confirmed',
+      'confirm_password' => 'required|string',
   ]);
   
   if ($validator->fails()) {
@@ -37,7 +37,11 @@ class UserController extends Controller
   }
   
   // return response()->json(['message' => 'Utente registrato con successo']);
-
+  if ($request->password !== $request->confirm_password) {
+    return response()->json([
+        'message' => 'Password non confermata.'
+    ], 400);
+}
 
   $user = User::create([
       'name' => ucfirst($request->name),
