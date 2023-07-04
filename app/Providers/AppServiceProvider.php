@@ -21,16 +21,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot():void
     {
-        Validator::extend('ucwords_transform', function ($attribute, $value, $parameters, $validator) {
-            $transformedValue = ucwords($value);
-            $validator->setData([$attribute => $transformedValue]);
-    
-            return true;
-        });
-        Validator::extend('ucfirst_transform', function ($attribute, $value, $parameters, $validator) {
-            $transformedValue = ucfirst($value);
-            return $transformedValue === $value;
-        });
+    //    
     }
 
 
