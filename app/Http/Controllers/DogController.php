@@ -185,7 +185,20 @@ if ($request->hasFile("img")) {
       "contacts" => "required|string|max:100",
     ]);
    
+    $dog = Dog::find($id);
     
+    if ($dog->microchip !== $request->input("microchip")) {
+      if (User::where("microchip", $request->microchip)->exists()) {
+        return response()->json(
+          [
+            "success" => false,
+            "message" => "Microchip esistente.",
+          ],
+          400
+        );
+      }
+    }
+
     if ($validator->fails()) {
       return response()->json(
         [
@@ -196,7 +209,7 @@ if ($request->hasFile("img")) {
       );
     }
 
-    $dog = Dog::find($id);
+    
 
     
     // ---------------img
@@ -267,17 +280,7 @@ if ($request->hasFile("img")) {
     if (!empty($request->input("contacts"))) {
       $dog->contacts = $request->input("contacts");
     }
-    if ($dog->microchip !== $request->input("microchip")) {
-      if (Dog::where("microchip", $request->microchip)->exists()) {
-        return response()->json(
-          [
-            "success" => false,
-            "message" => "Microchip esistente.",
-          ],
-          400
-        );
-      }
-    }
+    
     $dog->save();
 
     $data = [
