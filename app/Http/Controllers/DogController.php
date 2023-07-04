@@ -285,7 +285,7 @@ if ($request->hasFile("img")) {
   //   deleteDog
   public function deleteDog($id)
   {
-    $dog = User::find($id);
+    $dog = Dog::find($id);
 
     $dog->delete();
 
