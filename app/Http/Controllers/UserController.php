@@ -29,7 +29,20 @@ class UserController extends Controller
       'confirm_password' => 'required|string|same:password',
   ]);
   
+  if (User::where('email', $request->email)->exists()) {
+    return response()->json([
+        'success' => false,
+        'message' => 'Email esistente.'
+    ], 400);
+  }
   
+    if ($request->password !== $request->confirm_password) {
+      return response()->json([
+        'success' => false,
+          'message' => 'Password non confermata.'
+      ], 400);
+  
+  }
 
   if ($validator->fails()) {
     return response()->json([
@@ -39,20 +52,7 @@ class UserController extends Controller
 }
   
   
-if (User::where('email', $request->email)->exists()) {
-  return response()->json([
-      'success' => false,
-      'message' => 'Email esistente.'
-  ], 400);
-}
 
-  if ($request->password !== $request->confirm_password) {
-    return response()->json([
-      'success' => false,
-        'message' => 'Password non confermata.'
-    ], 400);
-
-}
 
   $user = User::create([
       'name' => ucfirst($request->name),
