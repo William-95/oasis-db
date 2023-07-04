@@ -184,6 +184,17 @@ if ($request->hasFile("img")) {
       "contacts" => "required|string|max:100",
     ]);
    
+    
+    if ($validator->fails()) {
+      return response()->json(
+        [
+          "message" => "validation fails",
+          "errors" => $validator->errors(),
+        ],
+        400
+      );
+    }
+    
     $dog = Dog::find($id);
 
     if ($dog->microchip !== $request->input("microchip")) {
@@ -197,16 +208,6 @@ if ($request->hasFile("img")) {
         );
       }
     }
-    if ($validator->fails()) {
-      return response()->json(
-        [
-          "message" => "validation fails",
-          "errors" => $validator->errors(),
-        ],
-        400
-      );
-    }
-
     // ---------------img
     if (!empty($request->file("img"))) {
       if ($request->hasFile("img")) {
