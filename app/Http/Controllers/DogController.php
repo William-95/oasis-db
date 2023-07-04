@@ -37,6 +37,15 @@ class DogController extends Controller
       "structure" => "required|string|max:100",
       "contacts" => "required|string|max:100",
     ]);
+    if (Dog::where("microchip", $request->microchip)->exists()) {
+      return response()->json(
+        [
+          "success" => false,
+          "message" => "Microchip esistente.",
+        ],
+        400
+      );
+    }
 
     if ($validator->fails()) {
       return response()->json(
