@@ -21,6 +21,7 @@ class Dog extends Model
     "microchip",
     "date_entry",
     "img",
+    "region",
     "structure",
     "contacts",
   ];
