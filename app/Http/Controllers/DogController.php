@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 use App\Models\Dog;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\Rule;
+
 
 class DogController extends Controller
 {
@@ -186,9 +186,9 @@ if ($request->hasFile("img")) {
     ]);
    
     $dog = Dog::find($id);
-    
+
     if ($dog->microchip !== $request->input("microchip")) {
-      if (User::where("microchip", $request->microchip)->exists()) {
+      if (Dog::where("microchip", $request->microchip)->exists()) {
         return response()->json(
           [
             "success" => false,
