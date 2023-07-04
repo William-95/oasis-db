@@ -177,19 +177,7 @@ if ($request->hasFile("img")) {
       "race" => "required|string|max:100",
       "size" => "required|string|max:100",
       "date_birth" => "required|date",
-      "microchip" => [
-        "required",
-        "numeric",
-        "regex:/^\d+$/",
-        function ($attribute, $value, $fail) use ($id, $request) {
-            $existingDog = Dog::where("microchip", $value)->first();
-            if ($existingDog && $existingDog->id !== $id) {
-                if ($value !== $request->input("microchip")) {
-                    $fail("The microchip has already been taken.");
-                }
-            }
-        },
-    ],
+      "microchip" => "required|numeric|regex:/^\d+$/",
       "date_entry" => "required|date",
       "img" => "required|image",
       "region" => "required|string|max:100",
@@ -197,8 +185,27 @@ if ($request->hasFile("img")) {
       "contacts" => "required|string|max:100",
     ]);
    
+    if ($validator->fails()) {
+      return response()->json(
+        [
+          "message" => "validation fails",
+          "errors" => $validator->errors(),
+        ],
+        400
+      );
+    }
+    
     $dog = Dog::find($id);
 
+    if ($dog->microchip !== $request->input("microchip")) {
+      $existingDog = Dog::where("microchip", $request->input("microchip"))->first();
+      if ($existingDog) {
+          return response()->json([
+              "success" => false,
+              "message" => "Microchip esistente.",
+          ], 400);
+      }
+  }
     // if ($dog->microchip !== $request->input("microchip")) {
     //   if (Dog::where("microchip", $request->microchip)->exists()) {
     //     return response()->json(
@@ -211,17 +218,7 @@ if ($request->hasFile("img")) {
     //   }
     // }
 
-    if ($validator->fails()) {
-      return response()->json(
-        [
-          "message" => "validation fails",
-          "errors" => $validator->errors(),
-        ],
-        400
-      );
-    }
-
-    
+      
 
     
     // ---------------img
