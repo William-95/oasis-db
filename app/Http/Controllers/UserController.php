@@ -100,14 +100,17 @@ return response()->json($data);
       'password' => 'nullable|string',
       'confirm_password' => 'nullable|string|same:password',
   ]);
-  
+
+  $user = User::find($id);
+
+  if($user->email!==$request->input("email")){
   if (User::where('email', $request->email)->exists()) {
     return response()->json([
         'success' => false,
         'message' => 'Email esistente.'
     ], 400);
   }
-  
+}
     if ($request->password !== $request->confirm_password) {
       return response()->json([
         'success' => false,
@@ -124,7 +127,7 @@ return response()->json($data);
   
 
 
-    $user = User::find($id);
+   
 
     
     if (!empty($request->input("name"))) {
