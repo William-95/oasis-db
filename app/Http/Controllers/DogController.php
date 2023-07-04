@@ -310,15 +310,44 @@ if ($request->hasFile("img")) {
   // findDog
   public function findDog(Request $request)
   {
-   
+    $validator = Validator::make($request->all(), [
+      "microchip" => "required|numeric|regex:/^\d+$/|unique:dog",
+    ]);
+
+    if ($validator->fails()) {
+      return response()->json(
+        [
+          "message" => "validation fails",
+          "errors" => $validator->errors(),
+        ],
+        400
+      );
+    }
+
     $microchip = $request->input("microchip");
 
     $dog = Dog::where("microchip", $microchip)->get();
 
     if ($dog->isNotEmpty()) {
-      return response()->json($dog);
+     $data = [
+      [
+        "metadata" => [
+          "success" => true,
+          "message" => "Cane trovato con successo.",
+        ],
+        "data" => $dog,
+      ],
+    ];
+
+    return response()->json($data);
     } else {
-      return response()->json("cane non trovato");
+      return response()->json(
+        [
+          "success" => false,
+          "message" => "Cane non presente.",
+        ],
+        400
+      );
     }
   }
 
