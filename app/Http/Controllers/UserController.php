@@ -29,17 +29,29 @@ class UserController extends Controller
       'confirm_password' => 'required|string|same:password',
   ]);
   
-  if ($validator->fails()) {
-      return response()->json([
-        'message'=>'validation fails',
-        'errors' => $validator->errors()
-      ], 400);
-  }
   
+
+  if ($validator->fails()) {
+    return response()->json([
+      'message'=>'validation fails',
+      'errors' => $validator->errors()
+    ], 400);
+}
+  
+  
+if (User::where('email', $request->email)->exists()) {
+  return response()->json([
+      'success' => false,
+      'message' => 'Email esistente.'
+  ], 400);
+}
+
   if ($request->password !== $request->confirm_password) {
     return response()->json([
+      'success' => false,
         'message' => 'Password non confermata.'
     ], 400);
+
 }
 
   $user = User::create([
