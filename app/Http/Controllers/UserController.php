@@ -36,7 +36,6 @@ class UserController extends Controller
       ], 400);
   }
   
-  // return response()->json(['message' => 'Utente registrato con successo']);
   if ($request->password !== $request->confirm_password) {
     return response()->json([
         'message' => 'Password non confermata.'
@@ -83,6 +82,27 @@ return response()->json($data);
   //   updateUser
   public function updateUser(Request $request, $id)
   {
+    $validator = Validator::make($request->all(), [
+      'name' => 'required|string|max:100',
+      'email' => 'required|string|email|max:100|unique:user',
+      'password' => 'nullable|string',
+      'confirm_password' => 'nullable|string|same:password',
+  ]);
+  
+  if ($validator->fails()) {
+      return response()->json([
+        'message'=>'validation fails',
+        'errors' => $validator->errors()
+      ], 400);
+  }
+  
+  if ($request->password !== $request->confirm_password) {
+    return response()->json([
+        'message' => 'Password non confermata.'
+    ], 400);
+}
+
+
     $user = User::find($id);
 
     
@@ -99,15 +119,27 @@ return response()->json($data);
       $user->confirm_password = Hash::make($request->input("confirm_password"));
     }
 
-    if ($request->input("password") == $request->input("confirm_password")) {
+    
       $user->save();
 
-      return response()->json($user);
-    } else {
-      return response()->json(
-        "Utente non modificato correttamente.Password non confermata"
-      );
-    }
+      $data = [
+        [
+            'metadata' => [
+                'success' => true,
+                'message' => 'Utente modificato con successo!'
+            ],
+            'data' => $user
+        ]
+      ];
+      
+      
+      return response()->json($data);
+      // return response()->json($user);
+    // } else {
+    //   return response()->json(
+    //     "Utente non modificato correttamente.Password non confermata"
+    //   );
+    
   }
   //   deleteUser
   public function deleteUser($id)
