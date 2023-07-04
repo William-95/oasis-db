@@ -23,44 +23,42 @@ class UserController extends Controller
     
 
     $validator = Validator::make($request->all(), [
-      'name' => ['required', 'string', 'max:255', function ($attribute, $value, $fail) {
-          $transformedValue = ucfirst($value);
-          if ($transformedValue !== $value) {
-              $fail('Il campo '.$attribute.' deve iniziare con una lettera maiuscola.');
-          }
-      }],
-      'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-      'password' => ['required', 'string', 'confirmed'],
-      'confirm_password' => ['required', 'string', 'confirmed'],
+      'name' => 'required'|'string'|'max:100',
+      'email' => 'required'|'string'|'email'|'max:100'|'unique:users',
+      'password' => 'required'|'string'|'confirmed',
+      'confirm_password' => 'required'|'string'|'confirmed',
   ]);
   
   if ($validator->fails()) {
-      return response()->json(['errors' => $validator->errors()], 400);
+      return response()->json([
+        'message'=>'validation fails',
+        'errors' => $validator->errors()
+      ], 400);
   }
   
-  return response()->json(['message' => 'Utente registrato con successo']);
+  // return response()->json(['message' => 'Utente registrato con successo']);
 
-//   $validatedData = $validator->validated();
-//   dd($validatedData);
-//   $user = User::create([
-//       'name' => $validatedData['name'],
-//       'email' => $validatedData['email'],
-//       'password' => Hash::make($validatedData['password']),
-//       'confirm_password' => Hash::make($validatedData['confirm_password']),
-//   ]);
+  $validatedData = $validator->validated();
 
-// $data = [
-//   [
-//       'metadata' => [
-//           'success' => true,
-//           'message' => 'Utente registrato con successo!'
-//       ],
-//       'data' => $user
-//   ]
-// ];
+  $user = User::create([
+      'name' => ucfirst($validatedData['name']),
+      'email' => $validatedData['email'],
+      'password' => Hash::make($validatedData['password']),
+      'confirm_password' => Hash::make($validatedData['confirm_password']),
+  ]);
+
+$data = [
+  [
+      'metadata' => [
+          'success' => true,
+          'message' => 'Utente registrato con successo!'
+      ],
+      'data' => $user
+  ]
+];
 
 
-// return response()->json($data);
+return response()->json($data);
 
 // --------------------------
 
