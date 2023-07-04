@@ -176,7 +176,7 @@ if ($request->hasFile("img")) {
       "race" => "required|string|max:100",
       "size" => "required|string|max:100",
       "date_birth" => "required|date",
-      "microchip" => "required|numeric|regex:/^\d+$/|unique:dog,microchip".$id,
+      "microchip" => "required|numeric|regex:/^\d+$/|unique:dog",
       "date_entry" => "required|date",
       "img" => "required|image",
       "region" => "required|string|max:100",
