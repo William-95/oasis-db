@@ -269,8 +269,11 @@ if ($request->hasFile("img")) {
     if (!empty($request->input("contacts"))) {
       $dog->contacts = $request->input("contacts");
     }
-    
 
+
+    $dog->save();
+
+    
     if ($dog->microchip !== $request->input("microchip")) {
       if (Dog::where("microchip", $request->microchip)->exists()) {
         return response()->json(
@@ -283,8 +286,6 @@ if ($request->hasFile("img")) {
       }
     }
 
-    
-    $dog->save();
 
     $data = [
       [
