@@ -38,13 +38,12 @@ class UserController extends Controller
   
   // return response()->json(['message' => 'Utente registrato con successo']);
 
-  $validatedData = $validator->validated();
 
   $user = User::create([
-      'name' => ucfirst($validatedData['name']),
-      'email' => $validatedData['email'],
-      'password' => Hash::make($validatedData['password']),
-      'confirm_password' => Hash::make($validatedData['confirm_password']),
+      'name' => ucfirst($request->name),
+      'email' => $request->email,
+      'password' => Hash::make($request->password),
+      'confirm_password' => Hash::make($request->confirm_password),
   ]);
 
 $data = [
