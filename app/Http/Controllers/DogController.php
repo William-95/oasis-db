@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use App\Models\Dog;
 use Illuminate\Support\Facades\Storage;
 
-
 class DogController extends Controller
 {
   // readDog
@@ -19,12 +18,11 @@ class DogController extends Controller
     return response()->json($dogs);
   }
 
-// ------------------- // ------------------- // ------------------- // ------------------- //
+  // ------------------- // ------------------- // ------------------- // ------------------- //
   // createDog
 
   public function createDog(Request $request)
   {
-
     $validator = Validator::make($request->all(), [
       "name" => "required|string|max:100",
       "sex" => "required|string|max:100",
@@ -58,66 +56,64 @@ class DogController extends Controller
       );
     }
 
+    if ($request->hasFile("img")) {
+      $image = $request->file("img");
+      $fileName = time() . "-" . $image->getClientOriginalName();
+      $ApiKey = env("API_KEY");
 
-if ($request->hasFile("img")) {
-  $image = $request->file("img");
-  $fileName = time() . "-" . $image->getClientOriginalName();
-  $ApiKey = env("API_KEY");
+      $response = Http::attach(
+        "image",
+        file_get_contents($image->getRealPath()),
+        $fileName
+      )
+        ->withHeaders([
+          "Accept" => "application/json",
+        ])
+        ->post("https://api.imgbb.com/1/upload", [
+          "key" => $ApiKey,
+        ]);
 
-  $response = Http::attach(
-    "image",
-    file_get_contents($image->getRealPath()),
-    $fileName
-  )
-    ->withHeaders([
-      "Accept" => "application/json",
-    ])
-    ->post("https://api.imgbb.com/1/upload", [
-      "key" => $ApiKey,
-    ]);
+      if ($response->successful()) {
+        $imageUrl = $response->json("data.url");
 
-  if ($response->successful()) {
-    $imageUrl = $response->json("data.url");
-   
-    $dog = Dog::create([
-      "name" => ucfirst($request->name),
-      "sex" => ucfirst($request->sex),
-      "race" => ucwords($request->race),
-      "size" => ucfirst($request->size),
-      "date_birth" => $request->date_birth,
-      "microchip" => $request->microchip,
-      "date_entry" => $request->date_entry,
-      "img" => $imageUrl,
-      "region" => ucwords($request->region),
-      "structure" => ucwords($request->structure),
-      "contacts" => $request->contacts,      
-    ]);
+        $dog = Dog::create([
+          "name" => ucfirst($request->name),
+          "sex" => ucfirst($request->sex),
+          "race" => ucwords($request->race),
+          "size" => ucfirst($request->size),
+          "date_birth" => $request->date_birth,
+          "microchip" => $request->microchip,
+          "date_entry" => $request->date_entry,
+          "img" => $imageUrl,
+          "region" => ucwords($request->region),
+          "structure" => ucwords($request->structure),
+          "contacts" => $request->contacts,
+        ]);
 
-    $data = [
-      [
-        "metadata" => [
-          "success" => true,
-          "message" => "Cane inserito con successo.",
-        ],
-        "data" => $dog,
-      ],
-    ];
+        $data = [
+          [
+            "metadata" => [
+              "success" => true,
+              "message" => "Cane inserito con successo.",
+            ],
+            "data" => $dog,
+          ],
+        ];
 
-    return response()->json($data);
-
-  } else {
-    $imageError = $response->json("error.message");
-    return response()->json([
-      "success" => false,
-      "error" => $imageError,
-    ]);
-  }
-} else {
-  return response()->json([
-    "success" => false,
-    "error" => "Nessun file immagine fornito.",
-]);
-}
+        return response()->json($data);
+      } else {
+        $imageError = $response->json("error.message");
+        return response()->json([
+          "success" => false,
+          "error" => $imageError,
+        ]);
+      }
+    } else {
+      return response()->json([
+        "success" => false,
+        "error" => "Nessun file immagine fornito.",
+      ]);
+    }
 
     // $dogs = new Dog();
 
@@ -166,11 +162,10 @@ if ($request->hasFile("img")) {
     // $dogs->save();
     // return response()->json($dogs);
   }
-// ------------------- // ------------------- // ------------------- // ------------------- //
+  // ------------------- // ------------------- // ------------------- // ------------------- //
   // updateDog
   public function updateDog(Request $request, $id)
   {
-
     $validator = Validator::make($request->all(), [
       "name" => "required|string|max:100",
       "sex" => "required|string|max:100",
@@ -184,20 +179,9 @@ if ($request->hasFile("img")) {
       "structure" => "required|string|max:100",
       "contacts" => "required|string|max:100",
     ]);
-   
-    if ($validator->fails()) {
-      return response()->json(
-        [
-          "message" => "validation fails",
-          "errors" => $validator->errors(),
-        ],
-        400
-      );
-    }
 
     $dog = Dog::find($id);
 
-  
     if ($dog->microchip !== $request->input("microchip")) {
       if (Dog::where("microchip", $request->microchip)->exists()) {
         return response()->json(
@@ -210,7 +194,16 @@ if ($request->hasFile("img")) {
       }
     }
 
-    
+    if ($validator->fails()) {
+      return response()->json(
+        [
+          "message" => "validation fails",
+          "errors" => $validator->errors(),
+        ],
+        400
+      );
+    }
+
     // ---------------img
     if (!empty($request->file("img"))) {
       if ($request->hasFile("img")) {
@@ -245,7 +238,7 @@ if ($request->hasFile("img")) {
         return response()->json([
           "success" => false,
           "error" => "Nessun file immagine fornito.",
-      ]);
+        ]);
       }
     }
     //------------ end img
@@ -280,12 +273,7 @@ if ($request->hasFile("img")) {
       $dog->contacts = $request->input("contacts");
     }
 
-
     $dog->save();
-
-
-    
-
 
     $data = [
       [
@@ -299,7 +287,7 @@ if ($request->hasFile("img")) {
 
     return response()->json($data);
   }
-// ------------------- // ------------------- // ------------------- // ------------------- //
+  // ------------------- // ------------------- // ------------------- // ------------------- //
   //   deleteDog
   public function deleteDog($id)
   {
@@ -322,24 +310,22 @@ if ($request->hasFile("img")) {
       "microchip" => "required|numeric|regex:/^\d+$/|unique:dog",
     ]);
 
-    
-
     $microchip = $request->input("microchip");
 
     $dog = Dog::where("microchip", "=", $microchip)->first();
 
     if ($dog) {
-     $data = [
-      [
-        "metadata" => [
-          "success" => true,
-          "message" => "Cane trovato con successo.",
+      $data = [
+        [
+          "metadata" => [
+            "success" => true,
+            "message" => "Cane trovato con successo.",
+          ],
+          "data" => $dog,
         ],
-        "data" => $dog,
-      ],
-    ];
+      ];
 
-    return response()->json($data);
+      return response()->json($data);
     } else {
       return response()->json(
         [
@@ -360,7 +346,6 @@ if ($request->hasFile("img")) {
       );
     }
   }
-
 
   // ------------------- // ------------------- // ------------------- // ------------------- //
   // oneDog
