@@ -198,7 +198,17 @@ if ($request->hasFile("img")) {
     $dog = Dog::find($id);
 
   
-    
+    if ($dog->microchip !== $request->input("microchip")) {
+      if (Dog::where("microchip", $request->microchip)->exists()) {
+        return response()->json(
+          [
+            "success" => false,
+            "message" => "Microchip esistente.",
+          ],
+          400
+        );
+      }
+    }
 
     
     // ---------------img
@@ -273,18 +283,8 @@ if ($request->hasFile("img")) {
 
     $dog->save();
 
+
     
-    if ($dog->microchip !== $request->input("microchip")) {
-      if (Dog::where("microchip", $request->microchip)->exists()) {
-        return response()->json(
-          [
-            "success" => false,
-            "message" => "Microchip esistente.",
-          ],
-          400
-        );
-      }
-    }
 
 
     $data = [
