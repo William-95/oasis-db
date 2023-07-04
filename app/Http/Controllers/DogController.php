@@ -194,31 +194,11 @@ if ($request->hasFile("img")) {
         400
       );
     }
-    
+
     $dog = Dog::find($id);
 
-    if ($dog->microchip !== $request->input("microchip")) {
-      $existingDog = Dog::where("microchip", $request->input("microchip"))->first();
-      if ($existingDog) {
-          return response()->json([
-              "success" => false,
-              "message" => "Microchip esistente.",
-          ], 400);
-      }
-  }
-    // if ($dog->microchip !== $request->input("microchip")) {
-    //   if (Dog::where("microchip", $request->microchip)->exists()) {
-    //     return response()->json(
-    //       [
-    //         "success" => false,
-    //         "message" => "Microchip esistente.",
-    //       ],
-    //       400
-    //     );
-    //   }
-    // }
-
-      
+  
+    
 
     
     // ---------------img
@@ -289,6 +269,20 @@ if ($request->hasFile("img")) {
     if (!empty($request->input("contacts"))) {
       $dog->contacts = $request->input("contacts");
     }
+    
+
+    if ($dog->microchip !== $request->input("microchip")) {
+      if (Dog::where("microchip", $request->microchip)->exists()) {
+        return response()->json(
+          [
+            "success" => false,
+            "message" => "Microchip esistente.",
+          ],
+          400
+        );
+      }
+    }
+
     
     $dog->save();
 
