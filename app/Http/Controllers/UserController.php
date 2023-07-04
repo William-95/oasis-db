@@ -20,40 +20,51 @@ class UserController extends Controller
   // createUser
   public function createUser(Request $request)
   {
-    // $user = new User();
+    
 
     $validator = Validator::make($request->all(), [
-      'name' => ['required', 'string', 'max:255', 'ucfirst_transform'],
+      'name' => ['required', 'string', 'max:255', function ($attribute, $value, $fail) {
+          $transformedValue = ucfirst($value);
+          if ($transformedValue !== $value) {
+              $fail('Il campo '.$attribute.' deve iniziare con una lettera maiuscola.');
+          }
+      }],
       'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-      'password' => ['required', 'string','confirmed'],
-      'confirm_password' => ['required', 'string','confirmed'],
+      'password' => ['required', 'string', 'confirmed'],
+      'confirm_password' => ['required', 'string', 'confirmed'],
   ]);
-
+  
   if ($validator->fails()) {
       return response()->json(['errors' => $validator->errors()], 400);
   }
+  
+  return response()->json(['message' => 'Utente registrato con successo']);
 
-  $validatedData = $validator->validated();
-  dd($validatedData);
-  $user = User::create([
-      'name' => $validatedData['name'],
-      'email' => $validatedData['email'],
-      'password' => Hash::make($validatedData['password']),
-      'confirm_password' => Hash::make($validatedData['confirm_password']),
-  ]);
+//   $validatedData = $validator->validated();
+//   dd($validatedData);
+//   $user = User::create([
+//       'name' => $validatedData['name'],
+//       'email' => $validatedData['email'],
+//       'password' => Hash::make($validatedData['password']),
+//       'confirm_password' => Hash::make($validatedData['confirm_password']),
+//   ]);
 
-$data = [
-  [
-      'metadata' => [
-          'success' => true,
-          'message' => 'Utente registrato con successo!'
-      ],
-      'data' => $user
-  ]
-];
+// $data = [
+//   [
+//       'metadata' => [
+//           'success' => true,
+//           'message' => 'Utente registrato con successo!'
+//       ],
+//       'data' => $user
+//   ]
+// ];
 
 
-return response()->json($data);
+// return response()->json($data);
+
+// --------------------------
+
+// $user = new User();
     // $user->name = ucfirst($request->input("name"));
     // $user->email = $request->input("email");
     // $user->password = Hash::make($request->input("password"));
