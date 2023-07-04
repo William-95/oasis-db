@@ -197,9 +197,7 @@ if ($request->hasFile("img")) {
         );
       }
     }else{
-      if (!empty($request->input("microchip"))) {
-        $dog->microchip = $request->input("microchip");
-      }
+      
     }
     if ($validator->fails()) {
       return response()->json(
@@ -264,7 +262,9 @@ if ($request->hasFile("img")) {
     if (!empty($request->input("date_birth"))) {
       $dog->date_birth = $request->input("date_birth");
     }
-    // 
+    if (!empty($request->input("microchip"))) {
+      $dog->microchip = $request->input("microchip");
+    }
     if (!empty($request->input("date_entry"))) {
       $dog->date_entry = $request->input("date_entry");
     }
