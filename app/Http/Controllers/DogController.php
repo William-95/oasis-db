@@ -314,15 +314,7 @@ if ($request->hasFile("img")) {
       "microchip" => "required|numeric|regex:/^\d+$/|unique:dog",
     ]);
 
-    if ($validator->fails()) {
-      return response()->json(
-        [
-          "message" => "validation fails",
-          "errors" => $validator->errors(),
-        ],
-        400
-      );
-    }
+    
 
     $microchip = $request->input("microchip");
 
@@ -346,6 +338,16 @@ if ($request->hasFile("img")) {
         [
           "success" => false,
           "message" => "Cane non presente.",
+        ],
+        400
+      );
+    }
+
+    if ($validator->fails()) {
+      return response()->json(
+        [
+          "message" => "validation fails",
+          "errors" => $validator->errors(),
         ],
         400
       );
