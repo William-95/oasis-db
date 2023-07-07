@@ -102,6 +102,16 @@ class UserController extends Controller
       "confirm_password" => "nullable|string|same:password",
     ]);
 
+    
+    if (User::where("email", $request->email)->exists()) {
+      return response()->json(
+        [
+          "success" => false,
+          "message" => "Email esistente.",
+        ],
+        400
+      );
+    }
 
     // if ($user->email !== $request->input("email")) {
     //   if (User::where("email", $request->email)->exists()) {
