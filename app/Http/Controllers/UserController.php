@@ -122,7 +122,7 @@ class UserController extends Controller
           400);
       }
 // confirm password error
-if($validator->errors()->has('email')){
+if($validator->errors()->has('confirm_password')){
   return response()->json(
     [
       "success" => false,
