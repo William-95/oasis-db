@@ -37,25 +37,19 @@ class DogController extends Controller
       "structure" => "required|string|max:100",
       "contacts" => "required|string|max:100",
     ]);
-    // if (Dog::where("microchip", $request->microchip)->exists()) {
-    //   return response()->json(
-    //     [
-    //       "success" => false,
-    //       "message" => "Microchip esistente.",
-    //     ],
-    //     400
-    //   );
-    // }
 
     if ($validator->fails()) {
-      if($validator->errors()->has('microchip')){
+      // error microchip
+      if ($validator->errors()->has("microchip")) {
         return response()->json(
           [
             "success" => false,
             "message" => "Microchip esistente.",
           ],
-          400);
+          400
+        );
       }
+      // outher error
       return response()->json(
         [
           "message" => "validation fails",
@@ -123,53 +117,6 @@ class DogController extends Controller
         "error" => "Nessun file immagine fornito.",
       ]);
     }
-
-    // $dogs = new Dog();
-
-    // // ------img
-    // if ($request->hasFile("img")) {
-    //   $image = $request->file("img");
-    //   $fileName = time() . "-" . $image->getClientOriginalName();
-    //   $ApiKey = env("API_KEY");
-
-    //   $response = Http::attach(
-    //     "image",
-    //     file_get_contents($image->getRealPath()),
-    //     $fileName
-    //   )
-    //     ->withHeaders([
-    //       "Accept" => "application/json",
-    //     ])
-    //     ->post("https://api.imgbb.com/1/upload", [
-    //       "key" => $ApiKey,
-    //     ]);
-
-    //   if ($response->successful()) {
-    //     $imageUrl = $response->json("data.url");
-    //     $dogs->img = $imageUrl;
-    //   } else {
-    //     $imageError = $response->json("error.message");
-    //     return response()->json([
-    //       "error" => $imageError,
-    //     ]);
-    //   }
-    // } else {
-    //   return "no file";
-    // }
-    // // ----end img
-    // $dogs->name = ucfirst($request->input("name"));
-    // $dogs->sex = ucfirst($request->input("sex"));
-    // $dogs->race = ucwords($request->input("race"));
-    // $dogs->size = ucfirst($request->input("size"));
-    // $dogs->date_birth = $request->input("date_birth");
-    // $dogs->microchip = $request->input("microchip");
-    // $dogs->date_entry = $request->input("date_entry");
-    // $dogs->region = ucwords($request->input("region"));
-    // $dogs->structure = ucwords($request->input("structure"));
-    // $dogs->contacts = $request->input("contacts");
-
-    // $dogs->save();
-    // return response()->json($dogs);
   }
   // ------------------- // ------------------- // ------------------- // ------------------- //
   // updateDog
@@ -183,12 +130,12 @@ class DogController extends Controller
       "race" => "required|string|max:100",
       "size" => "required|string|max:100",
       "date_birth" => "required|date",
-      "microchip" =>[
+      "microchip" => [
         "required",
         "numeric",
         "regex:/^\d+$/",
-         Rule::unique('dog')->ignore($dog->id)
-        ],
+        Rule::unique("dog")->ignore($dog->id),
+      ],
       "date_entry" => "required|date",
       "img" => "required|image",
       "region" => "required|string|max:100",
@@ -196,17 +143,18 @@ class DogController extends Controller
       "contacts" => "required|string|max:100",
     ]);
 
-    
-
     if ($validator->fails()) {
-      if($validator->errors()->has('microchip')){
+      // error microchip
+      if ($validator->errors()->has("microchip")) {
         return response()->json(
           [
             "success" => false,
             "message" => "Microchip esistente.",
           ],
-          400);
+          400
+        );
       }
+      // outher error
       return response()->json(
         [
           "message" => "validation fails",
