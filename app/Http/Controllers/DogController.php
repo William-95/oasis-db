@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Http\Request;
 use App\Models\Dog;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\Rule;
 
 class DogController extends Controller
 {
@@ -36,18 +37,25 @@ class DogController extends Controller
       "structure" => "required|string|max:100",
       "contacts" => "required|string|max:100",
     ]);
-    if (Dog::where("microchip", $request->microchip)->exists()) {
-      return response()->json(
-        [
-          "success" => false,
-          "message" => "Microchip esistente.",
-        ],
-        400
-      );
-    }
+    // if (Dog::where("microchip", $request->microchip)->exists()) {
+    //   return response()->json(
+    //     [
+    //       "success" => false,
+    //       "message" => "Microchip esistente.",
+    //     ],
+    //     400
+    //   );
+    // }
 
     if ($validator->fails()) {
-     
+      if($validator->errors()->has('microchip')){
+        return response()->json(
+          [
+            "success" => false,
+            "message" => "Microchip esistente.",
+          ],
+          400);
+      }
       return response()->json(
         [
           "message" => "validation fails",
