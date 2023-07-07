@@ -102,38 +102,17 @@ class UserController extends Controller
       "confirm_password" => "nullable|string|same:password",
     ]);
 
-
-    // if (User::where("email", $request->email)->exists()) {
+    // if ($request->password !== $request->confirm_password) {
     //   return response()->json(
     //     [
     //       "success" => false,
-    //       "message" => "Email esistente.",
+    //       "message" => "Password non confermata.",
     //     ],
     //     400
     //   );
     // }
-
-    // if ($user->email !== $request->input("email")) {
-    //   if (User::where("email", $request->email)->exists()) {
-    //     return response()->json(
-    //       [
-    //         "success" => false,
-    //         "message" => "Email esistente.",
-    //       ],
-    //       400
-    //     );
-    //   }
-    // }
-    if ($request->password !== $request->confirm_password) {
-      return response()->json(
-        [
-          "success" => false,
-          "message" => "Password non confermata.",
-        ],
-        400
-      );
-    }
     if ($validator->fails()) {
+// email error
       if($validator->errors()->has('email')){
         return response()->json(
           [
@@ -142,6 +121,16 @@ class UserController extends Controller
           ],
           400);
       }
+// confirm password error
+if($validator->errors()->has('email')){
+  return response()->json(
+    [
+      "success" => false,
+      "message" => "Password non confermata.",
+    ],
+    400);
+}
+// outher error
       return response()->json(
         [
           "message" => "validation fails",
