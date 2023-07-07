@@ -86,26 +86,27 @@ class UserController extends Controller
 
   public function updateUser(Request $request, $id)
   {
+    $user = User::find($id);
+
     $validator = Validator::make($request->all(), [
       "name" => "required|string|max:100",
-      "email" => "required|string|email|max:100|unique:user",
+      "email" => ["required|string|email|max:100",Rule::unique('user')->ignore($user->email)],
       "password" => "nullable|string",
       "confirm_password" => "nullable|string|same:password",
     ]);
 
-    $user = User::find($id);
 
-    if ($user->email !== $request->input("email")) {
-      if (User::where("email", $request->email)->exists()) {
-        return response()->json(
-          [
-            "success" => false,
-            "message" => "Email esistente.",
-          ],
-          400
-        );
-      }
-    }
+    // if ($user->email !== $request->input("email")) {
+    //   if (User::where("email", $request->email)->exists()) {
+    //     return response()->json(
+    //       [
+    //         "success" => false,
+    //         "message" => "Email esistente.",
+    //       ],
+    //       400
+    //     );
+    //   }
+    // }
     if ($request->password !== $request->confirm_password) {
       return response()->json(
         [
@@ -171,7 +172,7 @@ class UserController extends Controller
   // ------------------- // ------------------- // ------------------- // ------------------- //
   // findUser
 
-  
+
   public function findUser(Request $request)
   {
     $validator = Validator::make($request->all(), [
