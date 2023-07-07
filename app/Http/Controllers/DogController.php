@@ -166,13 +166,20 @@ class DogController extends Controller
   // updateDog
   public function updateDog(Request $request, $id)
   {
+    $dog = Dog::find($id);
+
     $validator = Validator::make($request->all(), [
       "name" => "required|string|max:100",
       "sex" => "required|string|max:100",
       "race" => "required|string|max:100",
       "size" => "required|string|max:100",
       "date_birth" => "required|date",
-      "microchip" => "required|numeric|regex:/^\d+$/",
+      "microchip" =>[
+        "required",
+        "numeric",
+        "regex:/^\d+$/",
+         Rule::unique('dog')->ignore($dog->id)
+        ],
       "date_entry" => "required|date",
       "img" => "required|image",
       "region" => "required|string|max:100",
@@ -180,8 +187,16 @@ class DogController extends Controller
       "contacts" => "required|string|max:100",
     ]);
 
-    $dog = Dog::find($id);
-
+    
+    if (Dog::where("microchip", $request->microchip)->exists()) {
+      return response()->json(
+        [
+          "success" => false,
+          "message" => "Microchip esistente.",
+        ],
+        400
+      );
+    }
     
 
     if ($validator->fails()) {
@@ -262,17 +277,17 @@ class DogController extends Controller
     if (!empty($request->input("contacts"))) {
       $dog->contacts = $request->input("contacts");
     }
-    if ($dog->microchip !== $request->input("microchip")) {
-      if (Dog::where("microchip", $request->microchip)->exists()) {
-        return response()->json(
-          [
-            "success" => false,
-            "message" => "Microchip esistente.",
-          ],
-          400
-        );
-      }
-    }
+    // if ($dog->microchip !== $request->input("microchip")) {
+    //   if (Dog::where("microchip", $request->microchip)->exists()) {
+    //     return response()->json(
+    //       [
+    //         "success" => false,
+    //         "message" => "Microchip esistente.",
+    //       ],
+    //       400
+    //     );
+    //   }
+    // }
     $dog->save();
 
     $data = [
