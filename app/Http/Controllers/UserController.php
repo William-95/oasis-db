@@ -102,16 +102,16 @@ class UserController extends Controller
       "confirm_password" => "nullable|string|same:password",
     ]);
 
-    
-    if (User::where("email", $request->email)->exists()) {
-      return response()->json(
-        [
-          "success" => false,
-          "message" => "Email esistente.",
-        ],
-        400
-      );
-    }
+
+    // if (User::where("email", $request->email)->exists()) {
+    //   return response()->json(
+    //     [
+    //       "success" => false,
+    //       "message" => "Email esistente.",
+    //     ],
+    //     400
+    //   );
+    // }
 
     // if ($user->email !== $request->input("email")) {
     //   if (User::where("email", $request->email)->exists()) {
@@ -134,6 +134,14 @@ class UserController extends Controller
       );
     }
     if ($validator->fails()) {
+      if($validator->error(['email'])){
+        return response()->json(
+          [
+            "success" => false,
+            "message" => "Email esistente.",
+          ],
+          400);
+      }
       return response()->json(
         [
           "message" => "validation fails",
