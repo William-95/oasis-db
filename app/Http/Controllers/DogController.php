@@ -47,6 +47,7 @@ class DogController extends Controller
     }
 
     if ($validator->fails()) {
+     
       return response()->json(
         [
           "message" => "validation fails",
@@ -190,6 +191,14 @@ class DogController extends Controller
     
 
     if ($validator->fails()) {
+      if($validator->errors()->has('microchip')){
+        return response()->json(
+          [
+            "success" => false,
+            "message" => "Microchip esistente.",
+          ],
+          400);
+      }
       return response()->json(
         [
           "message" => "validation fails",
@@ -267,17 +276,7 @@ class DogController extends Controller
     if (!empty($request->input("contacts"))) {
       $dog->contacts = $request->input("contacts");
     }
-    // if ($dog->microchip !== $request->input("microchip")) {
-    //   if (Dog::where("microchip", $request->microchip)->exists()) {
-    //     return response()->json(
-    //       [
-    //         "success" => false,
-    //         "message" => "Microchip esistente.",
-    //       ],
-    //       400
-    //     );
-    //   }
-    // }
+
     $dog->save();
 
     $data = [
