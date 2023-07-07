@@ -17,8 +17,7 @@ class UserController extends Controller
     return response()->json($user);
   }
 
-
-// ------------------- // ------------------- // ------------------- // ------------------- //
+  // ------------------- // ------------------- // ------------------- // ------------------- //
 
   // createUser
   public function createUser(Request $request)
@@ -30,27 +29,48 @@ class UserController extends Controller
       "confirm_password" => "required|string|same:password",
     ]);
 
-    if (User::where("email", $request->email)->exists()) {
-      return response()->json(
-        [
-          "success" => false,
-          "message" => "Email esistente.",
-        ],
-        400
-      );
-    }
+    // if (User::where("email", $request->email)->exists()) {
+    //   return response()->json(
+    //     [
+    //       "success" => false,
+    //       "message" => "Email esistente.",
+    //     ],
+    //     400
+    //   );
+    // }
 
-    if ($request->password !== $request->confirm_password) {
-      return response()->json(
-        [
-          "success" => false,
-          "message" => "Password non confermata.",
-        ],
-        400
-      );
-    }
+    // if ($request->password !== $request->confirm_password) {
+    //   return response()->json(
+    //     [
+    //       "success" => false,
+    //       "message" => "Password non confermata.",
+    //     ],
+    //     400
+    //   );
+    // }
 
     if ($validator->fails()) {
+      // email error
+      if ($validator->errors()->has("email")) {
+        return response()->json(
+          [
+            "success" => false,
+            "message" => "Email esistente.",
+          ],
+          400
+        );
+      }
+      // confirm password error
+      if ($validator->errors()->has("confirm_password")) {
+        return response()->json(
+          [
+            "success" => false,
+            "message" => "Password non confermata.",
+          ],
+          400
+        );
+      }
+      // outher error
       return response()->json(
         [
           "message" => "validation fails",
@@ -80,10 +100,8 @@ class UserController extends Controller
     return response()->json($data);
   }
 
-
   // ------------------- // ------------------- // ------------------- // ------------------- //
   //   updateUser
-
 
   public function updateUser(Request $request, $id)
   {
@@ -93,44 +111,37 @@ class UserController extends Controller
       "name" => "required|string|max:100",
       "email" => [
         "required",
-      "string",
-      "email",
-      "max:100",
-      Rule::unique('user')->ignore($user->id)
-    ],
+        "string",
+        "email",
+        "max:100",
+        Rule::unique("user")->ignore($user->id),
+      ],
       "password" => "nullable|string",
       "confirm_password" => "nullable|string|same:password",
     ]);
 
-    // if ($request->password !== $request->confirm_password) {
-    //   return response()->json(
-    //     [
-    //       "success" => false,
-    //       "message" => "Password non confermata.",
-    //     ],
-    //     400
-    //   );
-    // }
     if ($validator->fails()) {
-// email error
-      if($validator->errors()->has('email')){
+      // email error
+      if ($validator->errors()->has("email")) {
         return response()->json(
           [
             "success" => false,
             "message" => "Email esistente.",
           ],
-          400);
+          400
+        );
       }
-// confirm password error
-if($validator->errors()->has('confirm_password')){
-  return response()->json(
-    [
-      "success" => false,
-      "message" => "Password non confermata.",
-    ],
-    400);
-}
-// outher error
+      // confirm password error
+      if ($validator->errors()->has("confirm_password")) {
+        return response()->json(
+          [
+            "success" => false,
+            "message" => "Password non confermata.",
+          ],
+          400
+        );
+      }
+      // outher error
       return response()->json(
         [
           "message" => "validation fails",
@@ -185,7 +196,6 @@ if($validator->errors()->has('confirm_password')){
 
   // ------------------- // ------------------- // ------------------- // ------------------- //
   // findUser
-
 
   public function findUser(Request $request)
   {
