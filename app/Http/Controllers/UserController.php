@@ -134,7 +134,7 @@ class UserController extends Controller
       );
     }
     if ($validator->fails()) {
-      if($validator->error()->has('email')){
+      if($validator->errors()->has('email')){
         return response()->json(
           [
             "success" => false,
