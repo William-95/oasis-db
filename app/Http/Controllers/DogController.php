@@ -188,16 +188,6 @@ class DogController extends Controller
     ]);
 
     
-    if (Dog::where("microchip", $request->microchip)->exists()) {
-      return response()->json(
-        [
-          "success" => false,
-          "message" => "Microchip esistente.",
-        ],
-        400
-      );
-    }
-    
 
     if ($validator->fails()) {
       return response()->json(
